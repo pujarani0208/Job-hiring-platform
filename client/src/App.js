@@ -6,6 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { Provider } from 'react-redux';
 import store from './store';
+import JobForm from './components/JobForm';
+import JobDetails from './components/JobDetails';
 
 
 class App extends Component {
@@ -15,6 +17,8 @@ class App extends Component {
       <Provider store={store}>
             <Switch>
               <Route exact path ="/profile" component={Profile}/>
+              <Route exact path ="/postJob" component={JobForm}/>
+              <Route exact path ="/getAllPostedJobs" component={JobDetails}/>
             </Switch>
         < HomePage/>
       </Provider>

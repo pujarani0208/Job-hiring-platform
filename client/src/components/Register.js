@@ -24,7 +24,8 @@ class Register extends Component {
     name: "",
     email: "",
     password: "",
-    msg: ""
+    msg: "",
+    userType: "",
   };
 
   static propTypes = {
@@ -63,6 +64,7 @@ class Register extends Component {
 
   // Sets the value of the input fields to the state items of the same name
   onChange = (e) => {
+    console.log("values" , e.target.name , e.target.value);
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -70,9 +72,9 @@ class Register extends Component {
   onSubmit = (e) => {
     e.preventDefault();
 
-    const { name, email, password } = this.state;
+    const { name, email, password, userType } = this.state;
 
-    const user = { name, email, password };
+    const user = { name, email, password, userType };
     this.props.isLoading();
     this.props.register(user);
   };
@@ -113,6 +115,8 @@ class Register extends Component {
             {alert}
             <Form onSubmit={this.onSubmit}>
               <FormGroup className="text-center">
+              <Input class="BtnGroup-item btn" type="button" name="userType" id="userType" placeholder="Hire" value="Hire" selected onClick={this.onChange}/>
+              <Input class="BtnGroup-item btn" type="button" name="userType" id="userType"  placeholder="Get Hired" value ="Get Hired" onClick={this.onChange}/>
                 <Label for="name">Name</Label>
                 <Input
                   type="text"

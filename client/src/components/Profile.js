@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Route, Switch, Link } from 'react-router-dom'
+import JobForm from './JobForm';
+import JobDetails from './JobDetails';
 import { connect } from "react-redux";
 import {
   Button,
@@ -12,10 +15,18 @@ import './style.css';
 import { Redirect } from 'react-router-dom'
 import { logout } from '../actions/authActions';
 import { buttonReset} from '../actions/uiActions';
+import { isAuth } from '../actions/authActions'
+import store from '../store';
 
 export class Profile extends Component {
 
+  componentDidMount() {
+    // Check if session cookie is present
+    store.dispatch(isAuth());
+  }
+
   static propTypes = {
+    isAuthenticated: PropTypes.bool,
     button: PropTypes.bool,
     authState: PropTypes.object.isRequired,
     buttonReset: PropTypes.func.isRequired,
@@ -46,6 +57,17 @@ export class Profile extends Component {
           <br/>
            <CardSubtitle><h5> You are now Logged In <span role="img" aria-label="clap">👏 </span></h5></CardSubtitle>
           <br/>
+          <Switch>
+              <Route exact path ="/postJob" component={JobForm}/>
+              <Route exact path ="/getAllPostedJobs" component={JobDetails}/>
+            </Switch>
+            { this.props.button && <Link className='divStyle' to="/postJob">
+               <Button size="lg"  color="light">Post new job</Button>
+               </Link>}
+
+             {this.props.button && <Link className='divStyle' to="/getAllPostedJobs">
+               <Button  size="lg"  color="light">find jobs</Button>
+             </Link>}
         <Button size="lg" onClick={this.onLogout} color="primary">Logout</Button>
             </CardBody>
           </Card>
@@ -54,9 +76,12 @@ export class Profile extends Component {
     )
   }
 }
+
 const mapStateToProps = (state) => ({ //Maps state to redux store as props
   button: state.ui.button,
-  authState: state.auth
+  authState: state.auth,
+  isAuthenticated: state.auth.isAuthenticated
+
 });
 
 export default connect(mapStateToProps, { logout, buttonReset })(Profile);

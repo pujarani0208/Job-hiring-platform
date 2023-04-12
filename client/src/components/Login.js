@@ -27,7 +27,7 @@ class Login extends Component {
   state = {
     email: "",
     password: "",
-    msg: ""
+    msg: "",
   }
 
   static propTypes = {
@@ -81,6 +81,7 @@ onSubmit = (e) => {
       <div className={className}>
 
             <Card>
+
                 <CardBody >
                   <CardTitle> <h2><strong>Login</strong></h2></CardTitle>
                 <CardSubtitle className="text-muted">Don't have an account?
@@ -91,7 +92,6 @@ onSubmit = (e) => {
             ) : null}
                   <Form onSubmit={this.onSubmit} >
                   <FormGroup>
-
                     <Label for="email">E-mail</Label>
                     <Input
                       type="email"

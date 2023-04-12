@@ -38,16 +38,17 @@ export const isAuth = () => (dispatch) => {
 }
 
 //Register New User
-export const register = ({ name, email, password }) => (dispatch) => {
+export const register = ({ name, email, password, userType }) => (dispatch) => {
   // Headers
   const headers = {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Accept": "application/json"
     }
   };
 
   // Request body
-  const body = JSON.stringify({ name, email, password });
+  const body = JSON.stringify({ name, email, password, userType });
 
   axios
     .post("/api/users/register", JSON.parse(body), headers)
@@ -65,7 +66,7 @@ export const register = ({ name, email, password }) => (dispatch) => {
 };
 
 //Login User
-export const login = ({ email, password }) => (dispatch) => {
+export const login = ({ email, password, userType }) => (dispatch) => {
   // Headers
   const headers = {
     headers: {
@@ -74,7 +75,7 @@ export const login = ({ email, password }) => (dispatch) => {
   };
 
   // Request body
-  const body = JSON.stringify({ email, password });
+  const body = JSON.stringify({ email, password, userType });
 
   axios
     .post("/api/users/login", JSON.parse(body), headers)

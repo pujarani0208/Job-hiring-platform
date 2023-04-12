@@ -11,3 +11,5 @@ export const BUTTON_RESET = 'BUTTON_RESET';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
 export const IS_LOADING = 'IS_LOADING';
+export const REGISTER_JOB_FAIL='REGISTER_JOB_FAIL';
+export const GET_JOBS_SUCCESS='GET_JOBS_SUCCESS';

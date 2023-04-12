@@ -16,7 +16,7 @@ exports.isAuth = (req,res,next) => {
 };
 
 exports.registerUser = (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, userType } = req.body;
 
   const result = registerSchema.validate({ name, email, password});
   if(!result.error) {
@@ -29,7 +29,8 @@ exports.registerUser = (req, res) => {
         const newUser = new User({
           name,
           email,
-          password
+          password,
+          userType,
         });
 
         //Password hashing
@@ -55,7 +56,7 @@ exports.registerUser = (req, res) => {
 };
 
 exports.loginUser = (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, userType } = req.body;
 
   // basic validation
   const result = loginSchema.validate({ email, password});
@@ -68,7 +69,7 @@ exports.loginUser = (req, res) => {
       bcrypt.compare(password, user.password).then((isMatch) => {
         if (!isMatch) return res.status(400).json("Incorrect Email or Password");
 
-        const sessUser = { id: user.id, name: user.name, email: user.email };
+        const sessUser = { id: user.id, name: user.name, email: user.email, userType: user.userType };
         req.session.user = sessUser; // Auto saves session data in mongo store
 
         res.json(sessUser); // sends cookie with sessionID automatically in response
@@ -79,6 +80,22 @@ exports.loginUser = (req, res) => {
     res.status(422).json(result.error.details[0].message);
   }
 };
+
+exports.getUsers = async (req, res, next) => {
+  await User.find({})
+    .then(users => {
+      const userFunction = users.map(user => {
+        const container = {}
+        container.name = user.name
+        container.email = user.email
+        return container
+      })
+      res.status(200).json({ user: userFunction })
+    })
+    .catch(err =>
+      res.status(401).json({ message: "Not successful", error: err.message })
+    )
+}
 
 exports.logoutUser = (req, res) => {
   req.session.destroy((err) => {

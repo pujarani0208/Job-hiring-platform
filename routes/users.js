@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { registerUser, loginUser, logoutUser, authChecker } = require("../controllers/AuthController");
+const { registerUser, loginUser, logoutUser, authChecker, getUsers} = require("../controllers/AuthController");
 const { registerLimiter, loginLimiter } = require("../utils/rateLimiter");
 
 // Registers a new User
@@ -14,6 +14,8 @@ router.post("/login", loginLimiter, loginUser );
 // and deleting cookie on client side
 // Needs cookie containing sessionID to be attached to request
 router.delete("/logout", logoutUser );
+
+router.get("/getUsers", getUsers );
 
 // Check if user is Authenticated by reading session data
 // Needs cookie containing sessionID
