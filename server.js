@@ -29,7 +29,7 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("DB Connetion Successfull");
+    console.log("DB Connection Successfull");
   })
   .catch((err) => {
     console.log(err.message);
@@ -89,6 +89,7 @@ router.get("/", (req, res) => res.send("HELLO FRIEND"));
 // Uncomment Below for Development
 app.use("/api/users", require("./routes/users"));
 app.use("/api/jobs", require("./routes/JobDetails"));
+
 
 //Uncomment Below for Production, routes mounted at /sessions-auth-app and not root domain
 //app.use("/sessions-auth-app/api/users", require("./routes/users"));

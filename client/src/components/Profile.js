@@ -55,7 +55,7 @@ export class Profile extends Component {
             <CardBody>
           <CardTitle><h1>{ user ? `Welcome, ${user.name}`: ''} <span role="img" aria-label="party-popper">🎉 </span> </h1></CardTitle>
           <br/>
-           <CardSubtitle><h5> You are now Logged In <span role="img" aria-label="clap">👏 </span></h5></CardSubtitle>
+           <CardSubtitle><h5> <span role="img" aria-label="clap">👏 </span></h5></CardSubtitle>
           <br/>
           <Switch>
               <Route exact path ="/postJob" component={JobForm}/>

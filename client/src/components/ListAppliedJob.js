@@ -24,13 +24,11 @@ import {CCard,
 import PropTypes from "prop-types";
 import './style.css';
 import { Redirect } from 'react-router-dom'
-import { postJob } from '../actions/jobActions';
 import { buttonReset} from '../actions/uiActions';
 import { logout } from '../actions/authActions';
 import ApplyJobForm from './ApplyJobForm';
-import ListAppliedJob from './ListAppliedJob';
 
-class JobDetails extends Component {
+class ListAppliedJobs extends Component {
 
 	// Constructor
 	constructor(props) {
@@ -58,7 +56,7 @@ class JobDetails extends Component {
 	// execute the code
 	componentDidMount() {
 		fetch(
-"http://localhost:3000/api/jobs/getAllPostedJobs")
+"http://localhost:3000/api/jobs/getAllAppliedJobs")
 			.then((res) => res.json())
 			.then((json) => {
 				this.setState({
@@ -90,29 +88,22 @@ class JobDetails extends Component {
                 items.map((item) => ( 
                   <CCard>
                 <ol key = { item._id } >
-                  <CCardHeader> <h5>jobTitle: { item.jobTitle }</h5></CCardHeader>,
+                  <CCardHeader> <h5>Applicant Name: { item.personName }</h5></CCardHeader>,
                   <CCardBody>
-                  <CCardTitle><h5>companyName: { item.companyName }</h5></CCardTitle>,
+                  <CCardTitle><h5>Contact Number: { item.contactNo }</h5></CCardTitle>,
                   <CCardText>
-                  openings: { item.openings },
-                  location: { item.location },
-                  salary: { item.salary },
+                  gender: { item.gender },
+                  uniqueIdentity: { item.uniqueIdentity },
                   description: { item.description },
-                  personName: { item.personName },
-                  contactNo: { item.contactNo },
                   contactPersonProfile: { item.contactPersonProfile },
-                  jobAddress: { item.jobAddress },
+                  address: { item.address },
                   email: { item.email }, 
                   </CCardText>
                   <Switch>
-\              <Route exact path ="/applyJobForm" component={ApplyJobForm}/>
-\              <Route exact path ="/getAllAppliedJobs" component={ListAppliedJob}/>
+\              <Route exact path ="/#" component={ApplyJobForm}/>
             </Switch>
-            { this.props.button && <Link className='divStyle' to="/applyJobForm">
-               <CButton size="lg"  color="light">Apply</CButton>
-               </Link>}
-               { this.props.button && <Link className='divStyle' to="/getAllAppliedJobs">
-               <CButton size="lg"  color="light">View Applicants</CButton>
+            { this.props.button && <Link className='divStyle' to="/#">
+               <CButton size="lg"  color="light">Decline Job</CButton>
                </Link>}
                   </CCardBody>
                   </ol>
@@ -130,4 +121,4 @@ const mapStateToProps = (state) => ({ //Maps state to redux store as props
   authState: state.auth
 });
 
-export default connect(mapStateToProps, { logout, buttonReset })(JobDetails);
+export default connect(mapStateToProps, { logout, buttonReset })(ListAppliedJobs);

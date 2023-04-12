@@ -44,6 +44,30 @@ console.log(body);
     });
 };
 
+export const applyJobForm = ({ userId, gender , uniqueIdentity, location, description, personName, contactNo, contactPersonProfile, address, email }) => (dispatch) => {
+  // Headers
+  const body = JSON.stringify({ userId, gender , uniqueIdentity, location, description, personName, contactNo, contactPersonProfile, address, email });
+  const headers = {
+    headers: {
+      "Content-Type": "application/json"
+    }
+  };
+  // Request body
+console.log(body);
+  axios
+    .post("/api/jobs/applyJobForm", JSON.parse(body), headers)
+    .then((res) =>{
+      dispatch(returnStatus(res.data, res.status, 'REGISTER_SUCCESS'));
+    })
+    .catch((err) => {
+      dispatch(returnStatus(err.response.data, err.response.status, 'REGISTER_FAIL'))
+      dispatch({
+        type: REGISTER_JOB_FAIL
+      });
+      dispatch({ type: IS_LOADING })
+    });
+};
+
 export const  getAllPostedJobs = () => async (dispatch) => {
 
   try{
