@@ -81,7 +81,6 @@ const mapStateToProps = (state) => ({ //Maps state to redux store as props
   button: state.ui.button,
   authState: state.auth,
   isAuthenticated: state.auth.isAuthenticated
-
 });
 
 export default connect(mapStateToProps, { logout, buttonReset })(Profile);

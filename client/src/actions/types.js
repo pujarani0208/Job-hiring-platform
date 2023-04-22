@@ -13,3 +13,4 @@ export const AUTH_FAIL = 'AUTH_FAIL';
 export const IS_LOADING = 'IS_LOADING';
 export const REGISTER_JOB_FAIL='REGISTER_JOB_FAIL';
 export const GET_JOBS_SUCCESS='GET_JOBS_SUCCESS';
+export const GET_JOBS_FAILED='GET_JOBS_FAILED';

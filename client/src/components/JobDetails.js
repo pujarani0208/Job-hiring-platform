@@ -24,11 +24,12 @@ import {CCard,
 import PropTypes from "prop-types";
 import './style.css';
 import { Redirect } from 'react-router-dom'
-import { postJob } from '../actions/jobActions';
 import { buttonReset} from '../actions/uiActions';
 import { logout } from '../actions/authActions';
 import ApplyJobForm from './ApplyJobForm';
 import ListAppliedJob from './ListAppliedJob';
+import { getAllAppliedJobs } from '../actions/jobActions';
+
 
 class JobDetails extends Component {
 
@@ -41,8 +42,9 @@ class JobDetails extends Component {
       authState: PropTypes.object.isRequired,
       buttonReset: PropTypes.func.isRequired,
       logout: PropTypes.func.isRequired,
+      getAllAppliedJobs: PropTypes.func.isRequired
     };
-  
+   
     const onLogout = (e) => {
       e.preventDefault();
       this.props.buttonReset();
@@ -62,7 +64,7 @@ class JobDetails extends Component {
 			.then((res) => res.json())
 			.then((json) => {
 				this.setState({
-					items: json['job'],
+					items: json,
 					DataisLoaded: true
 				});
 			})
@@ -108,11 +110,17 @@ class JobDetails extends Component {
 \              <Route exact path ="/applyJobForm" component={ApplyJobForm}/>
 \              <Route exact path ="/getAllAppliedJobs" component={ListAppliedJob}/>
             </Switch>
-            { this.props.button && <Link className='divStyle' to="/applyJobForm">
+            { this.props.button && <Link className='divStyle' to={{
+                pathname: "/applyJobForm",
+                state: {jobId : item._id, userId : user.id} // your data array of objects
+             }}>
                <CButton size="lg"  color="light">Apply</CButton>
                </Link>}
-               { this.props.button && <Link className='divStyle' to="/getAllAppliedJobs">
-               <CButton size="lg"  color="light">View Applicants</CButton>
+               { this.props.button && <Link className='divStyle' to={{
+                pathname: "/getAllAppliedJobs",
+                state: {jobId : item._id, userId : user.id} // your data array of objects
+             }}>
+            <CButton size="lg"  color="light">View Applicants</CButton>
                </Link>}
                   </CCardBody>
                   </ol>
@@ -127,7 +135,9 @@ class JobDetails extends Component {
 
 const mapStateToProps = (state) => ({ //Maps state to redux store as props
   button: state.ui.button,
-  authState: state.auth
+  authState: state.auth,
+  jobId: state.jobId,
+  userId: state.userId
 });
 
 export default connect(mapStateToProps, { logout, buttonReset })(JobDetails);

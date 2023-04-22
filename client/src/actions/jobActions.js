@@ -2,15 +2,12 @@ import axios from "axios";
 import { returnStatus } from "./statusActions";
 
 import {
-  LOGIN_SUCCESS,
-  LOGIN_FAIL,
-  REGISTER_SUCCESS,
   REGISTER_JOB_FAIL,
   GET_JOBS_SUCCESS,
-  AUTH_SUCCESS,
   AUTH_FAIL,
   LOGOUT_SUCCESS,
   IS_LOADING,
+  GET_JOBS_FAILED,
 } from "./types";
 
 //Uncomment below for local testing
@@ -44,9 +41,9 @@ console.log(body);
     });
 };
 
-export const applyJobForm = ({ userId, gender , uniqueIdentity, location, description, personName, contactNo, contactPersonProfile, address, email }) => (dispatch) => {
+export const applyJobForm = ({ jobId, userId, gender , uniqueIdentity, location, description, personName, contactNo, contactPersonProfile, address, email }) => (dispatch) => {
   // Headers
-  const body = JSON.stringify({ userId, gender , uniqueIdentity, location, description, personName, contactNo, contactPersonProfile, address, email });
+  const body = JSON.stringify({ jobId, userId, gender , uniqueIdentity, location, description, personName, contactNo, contactPersonProfile, address, email });
   const headers = {
     headers: {
       "Content-Type": "application/json"
@@ -69,13 +66,32 @@ console.log(body);
 };
 
 export const  getAllPostedJobs = () => async (dispatch) => {
+  axios
+  .get("/api/jobs/getAllPostedJobs")
+  .then((res) =>{
+    dispatch(returnStatus(res.data, res.status, 'GET_JOBS_SUCCESS'));
+  })
+  .catch((err) => {
+    dispatch(returnStatus(err.response.data, err.response.status, 'GET_JOBS_FAILED'))
+    dispatch({
+      type: GET_JOBS_FAILED
+    });
+    dispatch({ type: IS_LOADING })
+  });
+}
 
-  try{
-      const response = await fetch('/api/jobs/getAllPostedJobs');
-      const data = await response.json();
-      return dispatch(data['job']);
-  }catch(error) {
-      return [];
-  }
-  
+
+export const  getAllAppliedJobs = () => async (dispatch) => {
+  axios
+  .get("/api/jobs/getAllAppliedJobs")
+  .then((response) =>{
+    dispatch(returnStatus(response.data, response.status, 'GET_JOBS_SUCCESS'));
+  })
+  .catch((err) => {
+    dispatch(returnStatus(err.response.data, err.response.status, 'GET_JOBS_FAILED'))
+    dispatch({
+      type: GET_JOBS_FAILED
+    });
+    dispatch({ type: IS_LOADING })
+  });
 }

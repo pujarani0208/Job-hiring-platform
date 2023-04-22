@@ -39,6 +39,8 @@ class ListAppliedJobs extends Component {
       authState: PropTypes.object.isRequired,
       buttonReset: PropTypes.func.isRequired,
       logout: PropTypes.func.isRequired,
+      userId: PropTypes.object.isRequired,
+      jobId: PropTypes.object.isRequired,
     };
   
     const onLogout = (e) => {
@@ -50,29 +52,29 @@ class ListAppliedJobs extends Component {
 			items: [],
 			DataisLoaded: false
 		};
-	}
+  }
 
-	// ComponentDidMount is used to
-	// execute the code
-	componentDidMount() {
-		fetch(
-"http://localhost:3000/api/jobs/getAllAppliedJobs")
-			.then((res) => res.json())
-			.then((json) => {
-				this.setState({
-					items: json['job'],
-					DataisLoaded: true
-				});
-			})
-	}
+ componentDidMount() {
+    fetch(
+    "http://localhost:3000/api/jobs/getAllAppliedJobs")
+      .then((res) => res.json())
+      .then((json) => {
+        this.setState({
+          items: json,
+          DataisLoaded: true
+        });
+      })
+  }
+
 	render() {
-    
     if(!this.props.authState.isAuthenticated) {
       return <Redirect to="/" />
     }
 
     const {user} = this.props.authState;
 		const { DataisLoaded, items } = this.state;
+    const jobId  = this.props.jobId;
+    const userId = this.props.userId;
 		if (!DataisLoaded) return <div>
 			<h1> Pleease wait some time.... </h1> </div> ;
 
@@ -92,6 +94,8 @@ class ListAppliedJobs extends Component {
                   <CCardBody>
                   <CCardTitle><h5>Contact Number: { item.contactNo }</h5></CCardTitle>,
                   <CCardText>
+                  jobId : {jobId},
+                  userId: {userId}
                   gender: { item.gender },
                   uniqueIdentity: { item.uniqueIdentity },
                   description: { item.description },
@@ -118,7 +122,7 @@ class ListAppliedJobs extends Component {
 
 const mapStateToProps = (state) => ({ //Maps state to redux store as props
   button: state.ui.button,
-  authState: state.auth
+  authState: state.auth,
 });
 
 export default connect(mapStateToProps, { logout, buttonReset })(ListAppliedJobs);

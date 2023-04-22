@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 
 const ApplyJobFormSchema = new mongoose.Schema({
+  jobId: {
+    type: String,
+    required: false
+},
     userId: {
     type: String,
     required: false

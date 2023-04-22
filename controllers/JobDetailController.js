@@ -24,6 +24,7 @@ exports.getAllPostedJobs = async (req,  res) => {
     .then(JobForms => {
       const jobFunction = JobForms.map(job => {
         const container = {}
+        container._id = job._id
         container.jobTitle = job.jobTitle
         container.openings = job.openings
         container.location = job.location
@@ -37,7 +38,7 @@ exports.getAllPostedJobs = async (req,  res) => {
         container.email = job.email
         return container
       })
-      res.status(200).json({ job: jobFunction })
+      res.status(200).json(jobFunction)
     })
     .catch(err =>
       res.status(401).json({ message: "Not successful", error: err.message })
@@ -67,6 +68,7 @@ exports.getAllAppliedJobs = async (req,  res) => {
     .then(jobs => {
       const jobFunction = jobs.map(job => {
         const container = {}
+        container._id = job._id
         container.gender = job.gender
         container.uniqueIdentity = job.uniqueIdentity
         container.location = job.location
@@ -79,7 +81,7 @@ exports.getAllAppliedJobs = async (req,  res) => {
         container.email = job.email
         return container
       })
-      res.status(200).json({ job: jobFunction })
+      res.status(200).json(jobFunction)
     })
     .catch(err =>
       res.status(401).json({ message: "Not successful", error: err.message })

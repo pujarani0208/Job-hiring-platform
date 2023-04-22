@@ -19,8 +19,13 @@ import { applyJobForm } from '../actions/jobActions';
 import { buttonReset} from '../actions/uiActions';
 import { logout } from '../actions/authActions';
 
-export class ApplyJobForm extends Component {
-  state = {
+ export class ApplyJobForm extends Component {
+  constructor(props) {
+		super(props);
+    this.state={
+      value:this.props.location.state,
+  }
+  const state = {
     gender: "",
     uniqueIdentity: "",
     location: "",
@@ -32,14 +37,14 @@ export class ApplyJobForm extends Component {
     address: "",
     email: "",
   };
-  static propTypes = {
+  const propTypes = {
     button: PropTypes.bool,
     authState: PropTypes.object.isRequired,
     buttonReset: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
     applyJobForm: PropTypes.func.isRequired
   };
-
+  }
 
   onLogout = (e) => {
     e.preventDefault();
@@ -51,16 +56,15 @@ export class ApplyJobForm extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-onSubmit = (e) => {
+  onSubmit = (e) => {
     e.preventDefault();
-    const {user} = this.props.authState;
     const {gender , uniqueIdentity, location, description, personName, contactNo, contactPersonProfile, address, email} = this.state;
     const data = {gender , uniqueIdentity, location, description, personName, contactNo, contactPersonProfile, address, email};
-    data.userId = user.id;
+    data.userId = this.props.location.state.userId;
+    data.jobId = this.props.location.state.jobId;
     console.log(data);
     this.props.applyJobForm(data);
   };
-
   render() {
 
     if(!this.props.authState.isAuthenticated) {
@@ -74,7 +78,7 @@ onSubmit = (e) => {
     <Card>
         <CardBody >
           <CardTitle> <h2><strong>Apply for job</strong></h2></CardTitle>
-          <CardSubtitle><h1>{ user ? `Welcome job details, ${user.name}`: ''} <span role="img" aria-label="party-popper">🎉 </span> </h1></CardSubtitle>
+          <CardSubtitle><h1>{ user ? `Welcome job details,${user.name}`: ''} <span role="img" aria-label="party-popper">🎉 </span> </h1></CardSubtitle>
         <Button size="lg" onClick={this.onLogout} color="primary">Logout</Button>
         {/* {this.state.msg ? (
       <Alert color="danger">{this.state.msg}</Alert>
@@ -184,8 +188,6 @@ onSubmit = (e) => {
     )
   }
 }
-
-
 const mapStateToProps = (state) => ({ //Maps state element in redux store to props
   //location of element in the state is on the right and key is on the left
   button: state.ui.button, //store.getState().ui.button another way to get button bool
@@ -193,7 +195,8 @@ const mapStateToProps = (state) => ({ //Maps state element in redux store to pro
   status: state.status,
   loading: state.ui.loading,
   authState: state.auth,
-  applyJobForm: state.applyJobForm
+  applyJobForm: state.applyJobForm,
+  getJob: state.getJob
 });
 
 export default connect(mapStateToProps, { logout, applyJobForm, buttonReset })(ApplyJobForm);
