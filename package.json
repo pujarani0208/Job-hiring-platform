@@ -13,7 +13,9 @@
   "license": "ISC",
   "dependencies": {
     "@coreui/react": "^4.7.0",
+    "@emotion/css": "^11.10.6",
     "@hapi/joi": "^16.1.8",
+    "@headlessui/react": "^1.7.14",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "bootstrap": "^4.4.1",

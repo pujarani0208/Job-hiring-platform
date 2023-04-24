@@ -10,17 +10,19 @@ import {
   FormGroup,
   Label,
   Input,
+  Alert,
   Spinner
 } from "reactstrap";
 import PropTypes from "prop-types";
 import './style.css';
 import { Redirect } from 'react-router-dom'
 import { postJob } from '../actions/jobActions';
-import { buttonReset} from '../actions/uiActions';
 import { logout } from '../actions/authActions';
+import { buttonClicked, buttonReset } from "../actions/uiActions";
 
 export class JobForm extends Component {
   state = {
+    msg: "",
     jobTitle: "",
     openings: "",
     location: "",
@@ -34,13 +36,42 @@ export class JobForm extends Component {
     email: "",
   };
   static propTypes = {
+    buttonClicked: PropTypes.func.isRequired,
     button: PropTypes.bool,
     authState: PropTypes.object.isRequired,
     buttonReset: PropTypes.func.isRequired,
     logout: PropTypes.func.isRequired,
+    applyJobForm: PropTypes.func.isRequired,
+    status: PropTypes.object.isRequired,
     registerJobs: PropTypes.func.isRequired
   };
 
+
+  // Removes sign in and register buttons from homepage
+  // upon mounting of Register component
+  componentDidMount() {
+    this.props.buttonClicked();
+  }
+
+  componentDidUpdate(prevProps) {
+    const status = this.props.status;
+    console.log('hew', status);
+    // Changes status message if it is different from previous message
+    if (status !== prevProps.status) {
+      if (status.id === "JOB_POSTED") {
+        this.setState({ msg: status.statusMsg });
+      } else {
+        this.setState({ msg: this.props.status.statusMsg });
+      }
+    }
+
+    // Redirects to Log In screen after a delay of 2secs if successfully registered
+    if (status.id === "JOB_POSTED") {
+      setTimeout(() => {
+        this.props.history.push("/getAllPostedJobs");
+      }, 2000);
+    }
+  }
 
   onLogout = (e) => {
     e.preventDefault();
@@ -63,7 +94,24 @@ onSubmit = (e) => {
   };
 
   render() {
+    let className = "divStyle";
 
+    // If HTTP 400 error, render alert with red color, else if
+    // it is 200 OK, render alert in green
+    let alert;
+    if (this.state.msg && this.props.status.respCode >= 400) {
+      alert = <Alert color="danger">{this.state.msg}</Alert>;
+    } else if (this.state.msg && this.props.status.respCode === 200) {
+      alert = (
+        <Alert color="success">
+          {this.state.msg} <br /> Redirecting to Log In screen
+        </Alert>
+      );
+    }
+
+    if (!this.props.button) {
+      className = "formStyle";
+    }
     if(!this.props.authState.isAuthenticated) {
       return <Redirect to="/" />
     }
@@ -71,15 +119,13 @@ onSubmit = (e) => {
     const {user} = this.props.authState;
 
     return (
-    <div className='formStyle'>
+    <div className={className}>
     <Card>
         <CardBody >
           <CardTitle> <h2><strong>Post job</strong></h2></CardTitle>
           <CardSubtitle><h1>{ user ? `Welcome job details, ${user.name}`: ''} <span role="img" aria-label="party-popper">🎉 </span> </h1></CardSubtitle>
         <Button size="lg" onClick={this.onLogout} color="primary">Logout</Button>
-        {/* {this.state.msg ? (
-      <Alert color="danger">{this.state.msg}</Alert>
-    ) : null} */}
+            {alert}
           <Form onSubmit={this.onSubmit} >
           <FormGroup>
             <br></br>
@@ -217,4 +263,4 @@ const mapStateToProps = (state) => ({ //Maps state element in redux store to pro
   registerJobs: state.registerJobs
 });
 
-export default connect(mapStateToProps, { logout, postJob, buttonReset })(JobForm);
+export default connect(mapStateToProps, { logout, postJob, buttonReset, buttonClicked})(JobForm);

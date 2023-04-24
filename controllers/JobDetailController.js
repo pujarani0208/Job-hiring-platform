@@ -14,7 +14,7 @@ exports.postJob = (req, res) => {
             newJobDetails
               .save()
               .then(
-                res.json("Successfully added job details")
+                res.json("Successfully posted new job")
               )
               .catch((err) => console.log(err));
 }
@@ -57,11 +57,10 @@ exports.applyJobForm = (req, res) => {
             newJobDetails
               .save()
               .then(
-                res.json(data)
+                res.json("Job applied successfuly")
               )
               .catch((err) => console.log(err));
 }
-
 
 exports.getAllAppliedJobs = async (req,  res) => {
   await ApplyJobForm.find({})

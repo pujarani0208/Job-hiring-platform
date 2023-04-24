@@ -2,12 +2,15 @@ import axios from "axios";
 import { returnStatus } from "./statusActions";
 
 import {
-  REGISTER_JOB_FAIL,
-  GET_JOBS_SUCCESS,
-  AUTH_FAIL,
-  LOGOUT_SUCCESS,
+  JOB_NOT_POSTED,
+  JOB_NOT_APPLIED,
+  JOB_POSTED,
+  JOB_APPLIED,
+  GET_JOBS,
+  GET_APPLIED_JOBS,
+  GET_JOBS_FAILS,
+  GET_APPLIED_JOBS_FAILS,
   IS_LOADING,
-  GET_JOBS_FAILED,
 } from "./types";
 
 //Uncomment below for local testing
@@ -30,12 +33,12 @@ console.log(body);
   axios
     .post("/api/jobs/postJob", JSON.parse(body), headers)
     .then((res) =>{
-      dispatch(returnStatus(res.data, res.status, 'REGISTER_SUCCESS'));
+      dispatch(returnStatus(res.data, res.status, JOB_POSTED));
     })
     .catch((err) => {
-      dispatch(returnStatus(err.response.data, err.response.status, 'REGISTER_FAIL'))
+      dispatch(returnStatus(err.response.data, err.response.status, JOB_NOT_POSTED))
       dispatch({
-        type: REGISTER_JOB_FAIL
+        type: JOB_NOT_POSTED
       });
       dispatch({ type: IS_LOADING })
     });
@@ -54,12 +57,12 @@ console.log(body);
   axios
     .post("/api/jobs/applyJobForm", JSON.parse(body), headers)
     .then((res) =>{
-      dispatch(returnStatus(res.data, res.status, 'REGISTER_SUCCESS'));
+      dispatch(returnStatus(res.data, res.status, JOB_APPLIED));
     })
     .catch((err) => {
-      dispatch(returnStatus(err.response.data, err.response.status, 'REGISTER_FAIL'))
+      dispatch(returnStatus(err.response.data, err.response.status, JOB_NOT_APPLIED))
       dispatch({
-        type: REGISTER_JOB_FAIL
+        type: JOB_NOT_APPLIED
       });
       dispatch({ type: IS_LOADING })
     });
@@ -69,12 +72,12 @@ export const  getAllPostedJobs = () => async (dispatch) => {
   axios
   .get("/api/jobs/getAllPostedJobs")
   .then((res) =>{
-    dispatch(returnStatus(res.data, res.status, 'GET_JOBS_SUCCESS'));
+    dispatch(returnStatus(res.data, res.status, GET_JOBS));
   })
   .catch((err) => {
-    dispatch(returnStatus(err.response.data, err.response.status, 'GET_JOBS_FAILED'))
+    dispatch(returnStatus(err.response.data, err.response.status, GET_JOBS_FAILS))
     dispatch({
-      type: GET_JOBS_FAILED
+      type: GET_JOBS_FAILS
     });
     dispatch({ type: IS_LOADING })
   });
@@ -85,12 +88,12 @@ export const  getAllAppliedJobs = () => async (dispatch) => {
   axios
   .get("/api/jobs/getAllAppliedJobs")
   .then((response) =>{
-    dispatch(returnStatus(response.data, response.status, 'GET_JOBS_SUCCESS'));
+    dispatch(returnStatus(response.data, response.status, GET_APPLIED_JOBS));
   })
   .catch((err) => {
-    dispatch(returnStatus(err.response.data, err.response.status, 'GET_JOBS_FAILED'))
+    dispatch(returnStatus(err.response.data, err.response.status, GET_APPLIED_JOBS_FAILS))
     dispatch({
-      type: GET_JOBS_FAILED
+      type: GET_APPLIED_JOBS_FAILS
     });
     dispatch({ type: IS_LOADING })
   });

@@ -1,15 +1,15 @@
 import React , { Component } from 'react';
-import HomePage from './components/HomePage';
-import Profile from './components/Profile';
+import HomePage from './pages/HomePage';
+import Profile from './pages/Profile';
 import { Route, Switch} from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { Provider } from 'react-redux';
 import store from './store';
-import JobForm from './components/JobForm';
-import JobDetails from './components/JobDetails';
-import ApplyJobForm from './components/ApplyJobForm';
-import ListAppliedJob from './components/ListAppliedJob';
+import JobForm from './pages/JobForm';
+import JobDetails from './pages/JobDetails';
+import ApplyJobForm from './pages/ApplyJobForm';
+import ListAppliedJob from './pages/ListAppliedJob';
 
 
 class App extends Component {
