@@ -1,43 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+
 import {
   Button,
   Card,
- CardTitle,
-  CardSubtitle,
   CardBody,
   Form,
+  Col,
+  Collapse,
   FormGroup,
   Label,
   Input,
   Alert,
   Spinner
 } from "reactstrap";
+import InnerNavbar from './InnerNavbar';
 import PropTypes from "prop-types";
 import './style.css';
 import { Redirect } from 'react-router-dom'
 import { applyJobForm } from '../actions/jobActions';
 import { logout } from '../actions/authActions';
 import { buttonClicked, buttonReset } from "../actions/uiActions";
+import { declineJobAplication , acceptJobAplication} from '../actions/jobActions';
 
  export class ApplyJobForm extends Component {
   constructor(props) {
 		super(props);
-    this.state={
-      value:this.props.location.state,
-  }
   const state = {
     msg: "",
-    gender: "",
-    uniqueIdentity: "",
-    location: "",
-    salary: "",
     description: "",
     personName: "",
-    contactNo: "",
-    contactPersonProfile: "",
-    address: "",
-    email: "",
+    applyStatus: "",
+    status: 'APPLY',
   };
   const propTypes = {
     buttonClicked: PropTypes.func.isRequired,
@@ -47,7 +41,20 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
     logout: PropTypes.func.isRequired,
     applyJobForm: PropTypes.func.isRequired,
     status: PropTypes.object.isRequired,
+    jobId: PropTypes.object.isRequired,
+    userId: PropTypes.object.isRequired,
+    declineJobAplication: PropTypes.func.isRequired,
+    acceptJobAplication: PropTypes.func.isRequired,
+    
   };
+  
+  this.state = {
+    visible: false,
+    id: "",
+    showDeclineButton: false,
+    showApplyButton: false,
+  };
+  
   }
 
   onLogout = (e) => {
@@ -60,11 +67,45 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  // Removes sign in and register buttons from homepage
-  // upon mounting of Register component
   componentDidMount() {
     this.props.buttonClicked();
-  }
+    const userId  = this.props.userId;
+    const jobId  = this.props.jobId;
+      fetch(
+      `http://localhost:3000/api/jobs/getJobStatusForUser/${userId}/${jobId}`)
+        .then((res) => res.json())
+        .then((json) => {
+          this.setState({
+            applyStatus: json['status'],
+            id: json['id']
+          });
+          if (this.state.applyStatus === "DECLINE") {
+            this.setState({
+              showDeclineButton: false,
+              showApplyButton: false,
+            });
+          } else if (this.state.applyStatus === "PENDING") {
+            this.setState({
+              showDeclineButton: true,
+              showApplyButton: false,
+              status: 'Decline',
+            });
+          } else if (this.state.applyStatus === "ACCEPT") {
+            this.setState({
+              showDeclineButton: true,
+              showApplyButton: false,
+              status: 'Decline'
+            });
+          } else if (this.state.applyStatus === "APPLY") {
+            this.setState({
+              showDeclineButton: false,
+              showApplyButton: true,
+              status: 'Apply'
+            });
+          }
+        })
+    }
+
   componentDidUpdate(prevProps) {
     const status = this.props.status;
     // Changes status message if it is different from previous message
@@ -79,155 +120,87 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
     // Redirects to Log In screen after a delay of 2secs if successfully registered
     if (status.id === "JOB_APPLIED") {
       setTimeout(() => {
-        this.props.history.push("/getAllPostedJobs");
+        <Redirect to="/getAllPostedJobs" />
       }, 2000);
     }
   }
 
   onSubmit = (e) => {
     e.preventDefault();
-    const {gender , uniqueIdentity, location, description, personName, contactNo, contactPersonProfile, address, email} = this.state;
-    const data = {gender , uniqueIdentity, location, description, personName, contactNo, contactPersonProfile, address, email};
-    data.userId = this.props.location.state.userId;
-    data.jobId = this.props.location.state.jobId;
-    console.log(data);
+    const {description} = this.state;
+    const data = {description};
+    data.userId = this.props.userId;
+    data.jobId = this.props.jobId;
     this.props.applyJobForm(data);
   };
   render() {
-    let className = "divStyle";
-
-    // If HTTP 400 error, render alert with red color, else if
-    // it is 200 OK, render alert in green
     let alert;
-    if (this.state.msg && this.props.status.respCode >= 400) {
-      alert = <Alert color="danger">{this.state.msg}</Alert>;
-    } else if (this.state.msg && this.props.status.respCode === 200) {
-      alert = (
-        <Alert color="success">
-          {this.state.msg} <br /> Redirecting to Log In screen
-        </Alert>
-      );
+    // if (this.state.msg && this.props.status.respCode >= 400) {
+    //   alert = <Alert color="danger">{this.state.msg}</Alert>;
+    // } else if (this.state.msg && this.props.status.respCode === 200) {
+    //   alert = (
+    //     <Alert color="success">
+    //       {this.state.msg} <br /> Redirecting to Log In screen
+    //     </Alert>
+    //   );
+    // }
+    const {visible}  = this.state;
+    const {showDeclineButton} = this.state;
+    const {showApplyButton} = this.state;
+    const onButtonClick = () => {
+      const flag = visible;
+      this.setState({
+        visible : !flag,
+        showApplyButton: !showApplyButton
+      })
     }
-
-    if (!this.props.button) {
-      className = "formStyle";
-    }
+    const onCancelClick = () => {
+      const flag = visible;
+      this.setState({
+        visible : !flag,
+        showApplyButton: !showApplyButton
+      })
+   }
     if(!this.props.authState.isAuthenticated) {
-      return <Redirect to="/" />
+      return <Redirect to="/login" />
     }
-    const {user} = this.props.authState;
-
     return (
-    
-    <div className={className}>
-    <Card>
-        <CardBody >
-          <CardTitle> <h2><strong>Apply for job</strong></h2></CardTitle>
-          <CardSubtitle><h1>{ user ? `Welcome job details,${user.name}`: ''} <span role="img" aria-label="party-popper">🎉 </span> </h1></CardSubtitle>
-        <Button size="lg" onClick={this.onLogout} color="primary">Logout</Button>
+      <>
+          <td>{this.state.applyStatus} </td>
+          <td><Collapse isOpen={this.state.visible}>
         {alert}
-          <Form onSubmit={this.onSubmit} >
-          <FormGroup>
-            <br></br>
-          <Label for="gender">Gender</Label>
-          <Input
-                  type="text"
-                  name="gender"
-                  id="gender"
-                  placeholder="Enter your gender"
-                  className="mb-3"
-                  size="lg"
-                  onChange={this.onChange}
-                />
-          <Label for="uniqueIdentity">Unique Identiy Number</Label>
-          <Input
-                  type="text"
-                  name="uniqueIdentity"
-                  id="uniqueIdentity"
-                  placeholder="Enter your unique Identity Number"
-                  className="mb-3"
-                  size="lg"
-                  onChange={this.onChange}
-                />
-            <Label for="location">Your Location</Label>
-            <Input
-                  type="text"
-                  name="location"
-                  id="location"
-                  placeholder="Enter your location"
-                  className="mb-3"
-                  size="lg"
-                  onChange={this.onChange}
-                />
-            <Label for="description">Description</Label>
+        <Form onSubmit={this.onSubmit} >
+          <td>
             <Input
                   type="text"
                   name="description"
                   id="description"
                   placeholder="Enter description"
                   className="mb-3"
-                  size="lg"
                   onChange={this.onChange}
                 />
-            <Label for="personName">Enter your name</Label>
-            <Input
-                  type="text"
-                  name="personName"
-                  id="personName"
-                  placeholder="Enter your name"
-                  className="mb-3"
-                  size="lg"
-                  onChange={this.onChange}
-                />
-              <Label for="contactNo">Contact No.</Label>
-            <Input
-                  type="text"
-                  name="contactNo"
-                  id="contactNo"
-                  placeholder="Enter your contact"
-                  className="mb-3"
-                  size="lg"
-                  onChange={this.onChange}
-                />
-              <Label for="contactPersonProfile">Contact Person Profile</Label>
-            <Input
-                  type="text"
-                  name="contactPersonProfile"
-                  id="contactPersonProfile"
-                  placeholder="Enter Contact Person Profile"
-                  className="mb-3"
-                  size="lg"
-                  onChange={this.onChange}
-                />
-              <Label for="address">Current Address</Label>
-            <Input
-                  type="text"
-                  name="address"
-                  id="address"
-                  placeholder="Enter your current address"
-                  className="mb-3"
-                  size="lg"
-                  onChange={this.onChange}
-                />
-            <Label for="email">E-mail</Label>
-            <Input
-              type="email"
-              name="email"
-              id="email"
-              size="lg"
-              placeholder="you@youremail.com"
-              className="mb-3"
-              onChange={this.onChange}
-            />
-            <Button size="lg" color="dark" style={{ marginTop: "2rem" }} block>
+                </td>
+          <td><Button color="dark" style={{ marginTop: "2rem" }} block>
                { this.props.loading ?
-               <span >Applying job.. <Spinner size="sm" color="light" /></span> : <span>Apply Job</span>}
+               <span >Applying job.. <Spinner size="sm" color="light" /></span> : <span>Submit</span>}
             </Button>
-          </FormGroup>
+            </td>
+            <td>
+            {<Button onClick={() => onCancelClick()}>Cancel</Button>}
+
+            </td>
         </Form>
-        </CardBody>
-    </Card>
-    </div>    
+    </Collapse></td>
+    <td>
+      {showDeclineButton &&
+        <Button color="light" onClick={() => this.props.declineJobAplication(`${this.state.id}`)}>Decline</Button>
+      }
+      </td>
+      <td>
+      {showApplyButton && 
+    <Button onClick={() => onButtonClick()}>{this.state.status}</Button>}
+    </td>      
+    </>
     )
   }
 }
@@ -241,4 +214,4 @@ const mapStateToProps = (state) => ({ //Maps state element in redux store to pro
   applyJobForm: state.applyJobForm,
 });
 
-export default connect(mapStateToProps, { logout, applyJobForm, buttonReset, buttonClicked })(ApplyJobForm);
+export default connect(mapStateToProps, { logout, applyJobForm, buttonReset, buttonClicked, declineJobAplication, acceptJobAplication})(ApplyJobForm);

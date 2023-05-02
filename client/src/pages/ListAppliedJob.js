@@ -2,10 +2,10 @@ import './style.css';
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Route, Switch, Link } from 'react-router-dom'
+import InnerNavbar from './InnerNavbar';
 import {
   Button,
   Card,
-  
  CardTitle,
   CardSubtitle,
   CardBody,
@@ -16,7 +16,11 @@ import {
   Spinner
 } from "reactstrap";
 import {CCard,
+  CCollapse,
   CButton,
+  CRow,
+  CCol,
+  CCardFooter,
   CCardBody,
   CCardHeader,
   CCardTitle,
@@ -26,37 +30,35 @@ import './style.css';
 import { Redirect } from 'react-router-dom'
 import { buttonReset} from '../actions/uiActions';
 import { logout } from '../actions/authActions';
+import { declineJobAplication , acceptJobAplication} from '../actions/jobActions';
 import ApplyJobForm from './ApplyJobForm';
+import ViewProfile from './ViewProfile';
 
 class ListAppliedJobs extends Component {
 
 	// Constructor
 	constructor(props) {
 		super(props);
-
     const propTypes = {
       button: PropTypes.bool,
       authState: PropTypes.object.isRequired,
       buttonReset: PropTypes.func.isRequired,
       logout: PropTypes.func.isRequired,
-      userId: PropTypes.object.isRequired,
-      jobId: PropTypes.object.isRequired,
+      declineJobAplication: PropTypes.func.isRequired,
+      acceptJobAplication: PropTypes.func.isRequired,
     };
   
-    const onLogout = (e) => {
-      e.preventDefault();
-      this.props.buttonReset();
-      this.props.logout();
-    };
 		this.state = {
 			items: [],
-			DataisLoaded: false
+			DataisLoaded: false,
 		};
+    
   }
 
  componentDidMount() {
+  const jobId  = this.props.location.state.jobId;
     fetch(
-    "http://localhost:3000/api/jobs/getAllAppliedJobs")
+    `http://localhost:3000/api/jobs/getAppliedJobs/${jobId}`)
       .then((res) => res.json())
       .then((json) => {
         this.setState({
@@ -66,56 +68,45 @@ class ListAppliedJobs extends Component {
       })
   }
 
+  
 	render() {
     if(!this.props.authState.isAuthenticated) {
-      return <Redirect to="/" />
+      return <Redirect to="/login" />
     }
-
-    const {user} = this.props.authState;
 		const { DataisLoaded, items } = this.state;
-    const jobId  = this.props.jobId;
-    const userId = this.props.userId;
 		if (!DataisLoaded) return <div>
 			<h1> Pleease wait some time.... </h1> </div> ;
-
     return (
-       <CCard>
-          <br></br>
-
-          <CButton onClick={this.onLogout} color="primary">Logout</CButton>
-      <CCardTitle><h1>{ user ? `Welcome, ${user.name}`: ''} <span role="img" aria-label="party-popper">🎉 </span> </h1></CCardTitle>
-      <CCardBody>
-
-      {
-                items.map((item) => ( 
-                  <CCard>
-                <ol key = { item._id } >
-                  <CCardHeader> <h5>Applicant Name: { item.personName }</h5></CCardHeader>,
-                  <CCardBody>
-                  <CCardTitle><h5>Contact Number: { item.contactNo }</h5></CCardTitle>,
-                  <CCardText>
-                  jobId : {jobId},
-                  userId: {userId}
-                  gender: { item.gender },
-                  uniqueIdentity: { item.uniqueIdentity },
-                  description: { item.description },
-                  contactPersonProfile: { item.contactPersonProfile },
-                  address: { item.address },
-                  email: { item.email }, 
-                  </CCardText>
-                  <Switch>
-\              <Route exact path ="/#" component={ApplyJobForm}/>
-            </Switch>
-            { this.props.button && <Link className='divStyle' to="/#">
-               <CButton size="lg"  color="light">Decline Job</CButton>
-               </Link>}
-                  </CCardBody>
-                  </ol>
-                  </CCard>
-                ))
-            }
-         </CCardBody>
-      </CCard>
+      <>
+      <div className="navbarMain">
+        <InnerNavbar></InnerNavbar>
+        </div>
+        <div className='divTable'>
+        <table>
+        <tr>
+          <th>Profile</th>
+          <th>Description</th>
+        </tr>
+        {
+          items.map((item) => ( 
+              <tr key = { item._id } > 
+              <td> { item.personName }
+              {/* <Button onClick={() => onButtonClick()}>Profile</Button> */}
+                  {/* <Collapse isOpen={this.state.visible}> */}
+              <ViewProfile userId = {item.userId}></ViewProfile>
+                  {/* </Collapse> */}
+              </td>
+              <td>{ item.description } </td>
+              <td>{item.location}</td>
+              <td><CButton color="light" onClick={() => this.props.acceptJobAplication(`${item._id}`)}>Accept</CButton></td>
+              <td><CButton color="light" onClick={() => this.props.declineJobAplication(`${item._id}`)}>Decline</CButton></td>
+                  {/* <CCard  class='jobCard' color= {`${item.status}` === 'ACCEPT' ? 'light' : 'light'} textColor= {`${item.status}` === 'ACCEPT' ? 'primary' : 'secondary'} > */}
+            </tr>
+            ))
+          }
+          </table>
+      </div>
+      </>
   )
 }
 }
@@ -125,4 +116,4 @@ const mapStateToProps = (state) => ({ //Maps state to redux store as props
   authState: state.auth,
 });
 
-export default connect(mapStateToProps, { logout, buttonReset })(ListAppliedJobs);
+export default connect(mapStateToProps, { logout, buttonReset, declineJobAplication, acceptJobAplication })(ListAppliedJobs);

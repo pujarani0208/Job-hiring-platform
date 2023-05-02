@@ -5,6 +5,10 @@ const JobFormSchema = new mongoose.Schema({
     type: String,
     required: false
 },
+  status: { 
+    type: String,
+    required: true
+  },
   jobTitle: {
     type: String,
     required: true
@@ -29,10 +33,6 @@ const JobFormSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  personName: {
-    type: String,
-    required: true
-  },
   contactNo: {
     type: String,
     required: true
@@ -41,7 +41,7 @@ const JobFormSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  contactPersonProfile: {
+  contactPersonName: {
     type: String,
     required: true
   },

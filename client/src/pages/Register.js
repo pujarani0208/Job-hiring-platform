@@ -18,6 +18,7 @@ import { buttonClicked, isLoading } from "../actions/uiActions";
 import { Link } from "react-router-dom";
 import { register } from "../actions/authActions";
 import "./style.css";
+import Navbar from "./Navbar";
 
 class Register extends Component {
   state = {
@@ -99,6 +100,10 @@ class Register extends Component {
       className = "formStyle";
     }
     return (
+      <>
+      <div className="navbarMain">
+        <Navbar></Navbar>
+        </div>
       <div className={className}>
         <Card>
           <CardBody>
@@ -158,6 +163,7 @@ class Register extends Component {
           </CardBody>
         </Card>
       </div>
+      </>
     );
   }
 }

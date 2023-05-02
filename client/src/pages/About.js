@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import InnerNavbar from './InnerNavbar';
+import Navbar from './Navbar';
 
-export class Profile extends Component {
+export class About extends Component {
   render() {
     return (
       <>
       <div className="navbarMain">
-        <InnerNavbar></InnerNavbar>
+        <Navbar></Navbar>
         </div>
        <div className="listMain">
           <p>At AVRTTI (आवृत्ति), we believe that everyone should have access to meaningful work that provides fair pay, safe working conditions, and opportunities for growth. We are a tech-driven startup that aims to bridge the gap between skilled workers and employers in the organized sector.
@@ -20,4 +20,4 @@ Thank you for considering AVRTTI (आवृत्ति). We look forward to par
   }
 }
 
-export default Profile;
+export default About;

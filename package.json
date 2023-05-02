@@ -12,10 +12,14 @@
   "author": "Puja Mashal",
   "license": "ISC",
   "dependencies": {
+    "@coreui/icons": "^3.0.1",
+    "@coreui/icons-react": "^2.1.0",
     "@coreui/react": "^4.7.0",
     "@emotion/css": "^11.10.6",
     "@hapi/joi": "^16.1.8",
     "@headlessui/react": "^1.7.14",
+    "@mui/material": "^5.12.2",
+    "antd": "^5.4.6",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "bootstrap": "^4.4.1",
@@ -27,11 +31,19 @@
     "express-rate-limit": "^5.1.1",
     "express-session": "^1.17.0",
     "helmet": "^3.21.3",
+    "i": "^0.3.7",
+    "mdb-react-ui-kit": "^6.0.0",
     "mongoose": "^5.12.3",
     "morgan": "^1.10.0",
+    "node-fetch": "^3.3.1",
+    "npm": "^9.6.5",
     "react-bootstrap": "^2.7.3",
     "react-router-dom": "^5.1.2",
-    "session-file-store": "^1.4.0"
+    "reactjs-popup": "^2.0.5",
+    "reactstrap": "^9.1.9",
+    "request": "^2.88.2",
+    "session-file-store": "^1.4.0",
+    "styled-components": "^5.3.10"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

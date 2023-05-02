@@ -3,20 +3,73 @@ body {
   width: 100%;
   padding: 0;
   margin: 0;
-  background-color: rgb(88, 113, 88);
+  /* background-image: url("./images/background.jpg") */
+  background: #c2c4b3;
 }
 
-.main {
+.myDiv {
+  padding: 0;
+  margin: 0;
   position: absolute;
-  width: 50%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #343a40;
+ }
+
+ .listMain {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #021018;
   margin: auto;
   text-align: center;
 }
 
+.jobMain {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translate(-0%, -0%);
+  color: #021018;
+  margin: auto;
+  text-align: center;
+}
+.navbarMain {
+  position: absolute;
+  width: 100%;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #0f71af;
+  margin: auto;
+  text-align: center;
+}
+.main {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #0f71af;
+  margin: auto;
+  text-align: center;
+}
+.jobCard {
+  background: #ecede6;
+  color: #0c0803;
+  box-shadow: 0 4px 8px 0 rgba(142, 202, 147, 0.2);
+  transition: 0.3s;
+  border-radius: 5px; /* 5px rounded corners */
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -40%);
+  position: absolute;
+  float: none; /* Added */
+  margin-bottom: 10px; /* Added */
+}
 @media only screen and (max-width: 768px) {
   .main {
     width: 100%;

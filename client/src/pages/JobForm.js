@@ -7,6 +7,8 @@ import {
   CardSubtitle,
   CardBody,
   Form,
+  Row,
+  Col,
   FormGroup,
   Label,
   Input,
@@ -16,6 +18,7 @@ import {
 import PropTypes from "prop-types";
 import './style.css';
 import { Redirect } from 'react-router-dom'
+import InnerNavbar from './InnerNavbar';
 import { postJob } from '../actions/jobActions';
 import { logout } from '../actions/authActions';
 import { buttonClicked, buttonReset } from "../actions/uiActions";
@@ -29,9 +32,8 @@ export class JobForm extends Component {
     salary: "",
     description: "",
     companyName: "",
-    personName: "",
     contactNo: "",
-    contactPersonProfile: "",
+    contactPersonName: "",
     jobAddress: "",
     email: "",
   };
@@ -45,7 +47,6 @@ export class JobForm extends Component {
     status: PropTypes.object.isRequired,
     registerJobs: PropTypes.func.isRequired
   };
-
 
   // Removes sign in and register buttons from homepage
   // upon mounting of Register component
@@ -65,12 +66,12 @@ export class JobForm extends Component {
       }
     }
 
-    // Redirects to Log In screen after a delay of 2secs if successfully registered
-    if (status.id === "JOB_POSTED") {
-      setTimeout(() => {
-        this.props.history.push("/getAllPostedJobs");
-      }, 2000);
-    }
+    // // Redirects to Log In screen after a delay of 2secs if successfully registered
+    // if (status.id === "JOB_POSTED") {
+    //   setTimeout(() => {
+    //     this.props.history.push("/getAllPostedJobs");
+    //   }, 2033000);
+    // }
   }
 
   onLogout = (e) => {
@@ -86,8 +87,8 @@ export class JobForm extends Component {
 onSubmit = (e) => {
     e.preventDefault();
     const {user} = this.props.authState;
-    const {jobTitle, openings, location, salary, description, companyName, personName, contactNo, contactPersonProfile, jobAddress, email} = this.state;
-    const data = {jobTitle, openings, location, salary, description, companyName, personName, contactNo, contactPersonProfile, jobAddress, email};
+    const {jobTitle, openings, location, salary, description, companyName, contactNo, contactPersonName, jobAddress, email} = this.state;
+    const data = {jobTitle, openings, location, salary, description, companyName, contactNo, contactPersonName, jobAddress, email};
     data.userId = user.id;
     console.log(data);
     this.props.postJob(data);
@@ -95,7 +96,6 @@ onSubmit = (e) => {
 
   render() {
     let className = "divStyle";
-
     // If HTTP 400 error, render alert with red color, else if
     // it is 200 OK, render alert in green
     let alert;
@@ -113,22 +113,31 @@ onSubmit = (e) => {
       className = "formStyle";
     }
     if(!this.props.authState.isAuthenticated) {
-      return <Redirect to="/" />
+      return <Redirect to="/login" />
     }
 
-    const {user} = this.props.authState;
-
     return (
+      <>
+      <div className="navbarMain">
+        <InnerNavbar></InnerNavbar>
+        </div>
     <div className={className}>
     <Card>
         <CardBody >
-          <CardTitle> <h2><strong>Post job</strong></h2></CardTitle>
-          <CardSubtitle><h1>{ user ? `Welcome job details, ${user.name}`: ''} <span role="img" aria-label="party-popper">🎉 </span> </h1></CardSubtitle>
-        <Button size="lg" onClick={this.onLogout} color="primary">Logout</Button>
             {alert}
-          <Form onSubmit={this.onSubmit} >
+          <Form onSubmit={this.onSubmit}>
+          <Row className="align-items-center">
+        <Col xs="auto">
           <FormGroup>
-            <br></br>
+          <Label for="companyName">Company Name</Label>
+            <Input
+                  type="text"
+                  name="companyName"
+                  id="companyName"
+                  placeholder="Enter Company Name"
+                  className="mb-3"
+                  onChange={this.onChange}
+                />
           <Label for="jobTitle">Job Title</Label>
           <Input
                   type="text"
@@ -136,29 +145,18 @@ onSubmit = (e) => {
                   id="jobTitle"
                   placeholder="Enter job title"
                   className="mb-3"
-                  size="lg"
                   onChange={this.onChange}
                 />
-          <Label for="openings">No ofJob Openings</Label>
+          <Label for="openings">No of Job Openings</Label>
           <Input
                   type="text"
                   name="openings"
                   id="openings"
                   placeholder="Enter job openings"
                   className="mb-3"
-                  size="lg"
                   onChange={this.onChange}
                 />
-            <Label for="location">Job Location</Label>
-            <Input
-                  type="text"
-                  name="location"
-                  id="jobTlocationitle"
-                  placeholder="Enter job location"
-                  className="mb-3"
-                  size="lg"
-                  onChange={this.onChange}
-                />
+            
             <Label for="salary">Job Location</Label>
             <Input
                   type="text"
@@ -166,88 +164,79 @@ onSubmit = (e) => {
                   id="salary"
                   placeholder="Enter Salary"
                   className="mb-3"
-                  size="lg"
                   onChange={this.onChange}
                 />
-            <Label for="description">Job description</Label>
+              <Label for="description">Job description</Label>
             <Input
                   type="text"
                   name="description"
                   id="description"
-                  placeholder="Enter job description"
+                  placeholder="Enter Job Description"
                   className="mb-3"
-                  size="lg"
                   onChange={this.onChange}
                 />
-              <Label for="companyName">Job companyName</Label>
-            <Input
-                  type="text"
-                  name="companyName"
-                  id="companyName"
-                  placeholder="Enter job companyName"
-                  className="mb-3"
-                  size="lg"
-                  onChange={this.onChange}
-                />
-              <Label for="personName">Job personName</Label>
-            <Input
-                  type="text"
-                  name="personName"
-                  id="personName"
-                  placeholder="Enter job personName"
-                  className="mb-3"
-                  size="lg"
-                  onChange={this.onChange}
-                />
-              <Label for="contactNo">Job contactNo</Label>
+                </FormGroup>
+          </Col>
+                <Col xs="auto">
+          <FormGroup>
+              <Label for="contactNo">Contact No</Label>
             <Input
                   type="text"
                   name="contactNo"
                   id="contactNo"
-                  placeholder="Enter job contactNo"
+                  placeholder="Enter Contact No"
                   className="mb-3"
-                  size="lg"
                   onChange={this.onChange}
                 />
-              <Label for="contactPersonProfile">Job contactPersonProfile</Label>
+              <Label for="contactPersonName">Contact Person Name</Label>
             <Input
                   type="text"
-                  name="contactPersonProfile"
-                  id="contactPersonProfile"
-                  placeholder="Enter job contactPersonProfile"
+                  name="contactPersonName"
+                  id="contactPersonName"
+                  placeholder="Contact Person Name"
                   className="mb-3"
-                  size="lg"
                   onChange={this.onChange}
                 />
-              <Label for="jobAddress">Job jobAddress</Label>
-            <Input
-                  type="text"
-                  name="jobAddress"
-                  id="jobAddress"
-                  placeholder="Enter job jobAddress"
-                  className="mb-3"
-                  size="lg"
-                  onChange={this.onChange}
-                />
-            <Label for="email">E-mail</Label>
+                <Label for="email">E-mail</Label>
             <Input
               type="email"
               name="email"
               id="email"
-              size="lg"
               placeholder="you@youremail.com"
               className="mb-3"
               onChange={this.onChange}
             />
-            <Button size="lg" color="dark" style={{ marginTop: "2rem" }} block>
+            <Label for="location">Job Location</Label>
+            <Input
+                  type="text"
+                  name="location"
+                  id="jobTlocationitle"
+                  placeholder="Enter job location"
+                  className="mb-3"
+                  onChange={this.onChange}
+                />
+            <Label for="jobAddress">Job Address</Label>
+            <Input
+                  type="text"
+                  name="jobAddress"
+                  id="jobAddress"
+                  placeholder="Enter Job Address"
+                  className="mb-3"
+                  onChange={this.onChange}
+                />
+            </FormGroup>
+          </Col>
+          </Row>
+            <Button color="dark" style={{ marginTop: "2rem" }} block>
                { this.props.loading ?
                <span >Posting job.. <Spinner size="sm" color="light" /></span> : <span>Posting Job</span>}
             </Button>
-          </FormGroup>
+          
         </Form>
         </CardBody>
     </Card>
     </div>    
+    </>
     )
   }
 }

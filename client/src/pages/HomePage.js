@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
-import Login from './Login';
-import Register from './Register';
 import { connect } from "react-redux";
-import { Route, Switch, Link } from 'react-router-dom'
-import {
-  Button,
-} from "reactstrap";
 import PropTypes from "prop-types";
-import { buttonClicked } from "../actions/uiActions";
 import './style.css';
 import store from '../store';
 import { isAuth } from '../actions/authActions'
 import {Redirect} from 'react-router-dom'
+import Navbar from './Navbar';
+import { Route, Switch} from 'react-router-dom'
+import About from './About';
 
-
-var divStyle = {
-color:'white'
-};
 
 export class HomePage extends Component {
 
@@ -35,32 +27,15 @@ export class HomePage extends Component {
     if(this.props.isAuthenticated) {
       return <Redirect to="/profile" />
     }
-
     return (
-       <div className="container">
-        <div className="main">
-          <h1 style={divStyle}> <strong>Avritti</strong> </h1>
-          <br/>
-            <h5 style={divStyle}>Connecting hardworking hands with quality work</h5>
-          <br/>
-          <div>
-
-            <Switch>
-              <Route exact path ="/login" component={Login}/>
-              <Route exact path ="/register" component={Register}/>
-            </Switch>
-
-             { this.props.button && <Link className='divStyle' to="/login">
-               <Button size="lg"  color="light">Sign In</Button>
-               </Link>}
-
-             {this.props.button && <Link className='divStyle' to="/register">
-               <Button  size="lg"  color="light">Register</Button>
-             </Link>}
-
-          </div>
+      <>
+      <div className="navbarMain">
+        <Navbar></Navbar>
         </div>
-    </div>
+        <Switch>
+              <Route exact path ="/about" component={About}/>
+        </Switch>
+    </>
     )
   }
 }

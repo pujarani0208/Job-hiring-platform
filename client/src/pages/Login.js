@@ -16,7 +16,7 @@ import { connect } from "react-redux"; // API to connect component state to redu
 import PropTypes from "prop-types";
 import { buttonClicked,isLoading } from "../actions/uiActions";
 import { login } from "../actions/authActions";
-
+import Navbar from './Navbar';
 import { Link } from 'react-router-dom'
 import './style.css';
 
@@ -72,16 +72,17 @@ onSubmit = (e) => {
 
 
   render() {
-
     let className = 'divStyle';
     if (!this.props.button) {
       className = 'formStyle';
     }
     return (
+      <>
+      <div className="navbarMain">
+        <Navbar></Navbar>
+        </div>
       <div className={className}>
-
             <Card>
-
                 <CardBody >
                   <CardTitle> <h2><strong>Login</strong></h2></CardTitle>
                 <CardSubtitle className="text-muted">Don't have an account?
@@ -123,6 +124,7 @@ onSubmit = (e) => {
             </Card>
 
       </div>
+      </>
     )
   }
 }

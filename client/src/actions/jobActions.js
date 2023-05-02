@@ -20,9 +20,9 @@ import {
 //axios.defaults.baseURL = "https://demos.shawndsilva.com/sessions-auth-app"
 
 //Register New User
-export const postJob = ({ userId, jobTitle, openings, location, salary, description, companyName, personName, contactNo, contactPersonProfile, jobAddress, email }) => (dispatch) => {
+export const postJob = ({ userId, jobTitle, openings, location, salary, description, companyName, contactNo, contactPersonName, jobAddress, email }) => (dispatch) => {
   // Headers
-  const body = JSON.stringify({ userId, jobTitle, openings, location, salary, description, companyName, personName, contactNo, contactPersonProfile, jobAddress, email });
+  const body = JSON.stringify({ userId, jobTitle, openings, location, salary, description, companyName, contactNo, contactPersonName, jobAddress, email });
   const headers = {
     headers: {
       "Content-Type": "application/json"
@@ -44,9 +44,9 @@ console.log(body);
     });
 };
 
-export const applyJobForm = ({ jobId, userId, gender , uniqueIdentity, location, description, personName, contactNo, contactPersonProfile, address, email }) => (dispatch) => {
+export const applyJobForm = ({ description, jobId, userId}) => (dispatch) => {
   // Headers
-  const body = JSON.stringify({ jobId, userId, gender , uniqueIdentity, location, description, personName, contactNo, contactPersonProfile, address, email });
+  const body = JSON.stringify({ description, jobId, userId});
   const headers = {
     headers: {
       "Content-Type": "application/json"
@@ -83,6 +83,65 @@ export const  getAllPostedJobs = () => async (dispatch) => {
   });
 }
 
+export const  deleteJobAplication = (id) => async (dispatch) => {
+  axios
+  .get(`/api/jobs/deleteJobAplication/${id}`)
+  .then((res) =>{
+    dispatch(returnStatus(res.data, res.status, GET_JOBS));
+  })
+  .catch((err) => {
+    dispatch(returnStatus(err.response.data, err.response.status, GET_JOBS_FAILS))
+    dispatch({
+      type: GET_JOBS_FAILS
+    });
+    dispatch({ type: IS_LOADING })
+  });
+}
+
+export const  deactivateJob = (id) => async (dispatch) => {
+  axios
+  .get(`/api/jobs/deactivateJob/${id}`)
+  .then((res) =>{
+    dispatch(returnStatus(res.data, res.status, GET_JOBS));
+  })
+  .catch((err) => {
+    dispatch(returnStatus(err.response.data, err.response.status, GET_JOBS_FAILS))
+    dispatch({
+      type: GET_JOBS_FAILS
+    });
+    dispatch({ type: IS_LOADING })
+  });
+}
+
+export const  declineJobAplication = (id) => async (dispatch) => {
+  axios
+  .get(`/api/jobs/declineJobAplication/${id}`)
+  .then((res) =>{
+    dispatch(returnStatus(res.data, res.status, GET_JOBS));
+  })
+  .catch((err) => {
+    dispatch(returnStatus(err.response.data, err.response.status, GET_JOBS_FAILS))
+    dispatch({
+      type: GET_JOBS_FAILS
+    });
+    dispatch({ type: IS_LOADING })
+  });
+}
+
+export const  acceptJobAplication = (id) => async (dispatch) => {
+  axios
+  .get(`/api/jobs/acceptJobAplication/${id}`)
+  .then((res) =>{
+    dispatch(returnStatus(res.data, res.status, GET_JOBS));
+  })
+  .catch((err) => {
+    dispatch(returnStatus(err.response.data, err.response.status, GET_JOBS_FAILS))
+    dispatch({
+      type: GET_JOBS_FAILS
+    });
+    dispatch({ type: IS_LOADING })
+  });
+}
 
 export const  getAllAppliedJobs = () => async (dispatch) => {
   axios

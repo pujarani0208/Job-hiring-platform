@@ -2,25 +2,20 @@ import './style.css';
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Route, Switch, Link } from 'react-router-dom'
+import Popup from 'reactjs-popup';
 import {
   Button,
-  Card,
-  
- CardTitle,
-  CardSubtitle,
-  CardBody,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  Spinner
 } from "reactstrap";
 import {CCard,
+  CRow,
+  CCol,
   CButton,
   CCardBody,
   CCardHeader,
   CCardTitle,
+  CContainer,
   CCardText,} from '@coreui/react';
+import InnerNavbar from './InnerNavbar';
 import PropTypes from "prop-types";
 import './style.css';
 import { Redirect } from 'react-router-dom'
@@ -28,7 +23,8 @@ import { buttonReset} from '../actions/uiActions';
 import { logout } from '../actions/authActions';
 import ApplyJobForm from './ApplyJobForm';
 import ListAppliedJob from './ListAppliedJob';
-import { getAllAppliedJobs } from '../actions/jobActions';
+import { getAllAppliedJobs, deactivateJob } from '../actions/jobActions';
+import { AiFillInfoCircle } from "react-icons/ai";
 
 
 class JobDetails extends Component {
@@ -42,20 +38,16 @@ class JobDetails extends Component {
       authState: PropTypes.object.isRequired,
       buttonReset: PropTypes.func.isRequired,
       logout: PropTypes.func.isRequired,
-      getAllAppliedJobs: PropTypes.func.isRequired
-    };
-   
-    const onLogout = (e) => {
-      e.preventDefault();
-      this.props.buttonReset();
-      this.props.logout();
+      getAllAppliedJobs: PropTypes.func.isRequired,
+      deactivateJob: PropTypes.func.isRequired,
+      jobId: PropTypes.object.isRequired,
+      userId: PropTypes.object.isRequired
     };
 		this.state = {
 			items: [],
 			DataisLoaded: false
 		};
-	}
-
+}
 	// ComponentDidMount is used to
 	// execute the code
 	componentDidMount() {
@@ -69,10 +61,11 @@ class JobDetails extends Component {
 				});
 			})
 	}
+
 	render() {
     
     if(!this.props.authState.isAuthenticated) {
-      return <Redirect to="/" />
+      return <Redirect to="/login" />
     }
 
     const {user} = this.props.authState;
@@ -81,54 +74,64 @@ class JobDetails extends Component {
 			<h1> Pleease wait some time.... </h1> </div> ;
 
     return (
-       <CCard>
-          <br></br>
+      <>
+      <div className="navbarMain">
+        <InnerNavbar></InnerNavbar>
+        </div>
+        <div className='divTable'>
+        <table>
+        <tr>
+          <th>Job Title</th>
+          <th>Company Name</th>
+          <th>Location</th>
+          <th>Other Details</th>
+          <th></th>
+          <th></th>
+          <th>Job Status</th>
 
-          <CButton onClick={this.onLogout} color="primary">Logout</CButton>
-      <CCardTitle><h1>{ user ? `Welcome, ${user.name}`: ''} <span role="img" aria-label="party-popper">🎉 </span> </h1></CCardTitle>
-      <CCardBody>
-
-      {
-                items.map((item) => ( 
-                  <CCard>
-                <ol key = { item._id } >
-                  <CCardHeader> <h5>jobTitle: { item.jobTitle }</h5></CCardHeader>,
+        </tr>
+            {
+                items.map((item) => (
+                  <tr key = { item._id } > 
+              <td><Popup trigger=
+                {<h6  color="dark">{item.jobTitle}<AiFillInfoCircle /></h6>}
+                position="center">
+                  <CCard color= {`${item.status}` === 'ACCEPT' ? 'light' : 'light'} textColor= {`${item.status}` === 'ACCEPT' ? 'primary' : 'secondary'} >
+                  <CCardHeader> <h5>{item.companyName }</h5></CCardHeader>
                   <CCardBody>
-                  <CCardTitle><h5>companyName: { item.companyName }</h5></CCardTitle>,
+                  <CCardTitle><h5>{item.jobTitle}</h5></CCardTitle>
                   <CCardText>
-                  openings: { item.openings },
-                  location: { item.location },
-                  salary: { item.salary },
-                  description: { item.description },
-                  personName: { item.personName },
-                  contactNo: { item.contactNo },
-                  contactPersonProfile: { item.contactPersonProfile },
-                  jobAddress: { item.jobAddress },
-                  email: { item.email }, 
+                  Openings: { item.openings }<br></br>
+                  Salary: { item.salary }<br></br>
+                  Description: { item.description }<br></br>
+                  ContactNo: { item.contactNo }<br></br>
+                  Email: { item.email }<br></br>
+                  Location: {item.location}<br></br>
+                  jobAddress: { item.jobAddress }<br></br> 
                   </CCardText>
-                  <Switch>
-\              <Route exact path ="/applyJobForm" component={ApplyJobForm}/>
-\              <Route exact path ="/getAllAppliedJobs" component={ListAppliedJob}/>
-            </Switch>
-            { this.props.button && <Link className='divStyle' to={{
-                pathname: "/applyJobForm",
-                state: {jobId : item._id, userId : user.id} // your data array of objects
-             }}>
-               <CButton size="lg"  color="light">Apply</CButton>
-               </Link>}
-               { this.props.button && <Link className='divStyle' to={{
+                  </CCardBody>
+                  </CCard>               
+                  </Popup></td>
+              <td>{item.companyName }</td>
+              <td>{item.location}</td>
+              <td><CButton  color="primary" onClick={() => this.props.deactivateJob(`${item._id}`)}>Deactivate</CButton></td>
+              <td>
+              <Link to={{
                 pathname: "/getAllAppliedJobs",
                 state: {jobId : item._id, userId : user.id} // your data array of objects
              }}>
-            <CButton size="lg"  color="light">View Applicants</CButton>
-               </Link>}
-                  </CCardBody>
-                  </ol>
-                  </CCard>
+            <CButton color="primary">View Applicants</CButton>
+               </Link>
+              </td>
+              <td>
+              <ApplyJobForm jobId = {item._id} userId = {user.id}></ApplyJobForm>
+              </td>
+            </tr>
                 ))
             }
-         </CCardBody>
-      </CCard>
+            </table>
+            </div>
+            </>
   )
 }
 }
@@ -140,4 +143,4 @@ const mapStateToProps = (state) => ({ //Maps state to redux store as props
   userId: state.userId
 });
 
-export default connect(mapStateToProps, { logout, buttonReset })(JobDetails);
+export default connect(mapStateToProps, { logout, buttonReset, deactivateJob })(JobDetails);

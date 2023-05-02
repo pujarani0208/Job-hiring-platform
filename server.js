@@ -89,6 +89,7 @@ router.get("/", (req, res) => res.send("HELLO FRIEND"));
 // Uncomment Below for Development
 app.use("/api/users", require("./routes/users"));
 app.use("/api/jobs", require("./routes/JobDetails"));
+app.use("/api/profile", require("./routes/profile"));
 
 
 //Uncomment Below for Production, routes mounted at /sessions-auth-app and not root domain
