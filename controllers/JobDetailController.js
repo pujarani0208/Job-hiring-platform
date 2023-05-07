@@ -138,6 +138,15 @@ exports.declineJobAplication = async (req,  res) => {
     )
 };
 
+exports.deleteJobAplication = async (req,  res) => {
+  let id = req.params['id'];
+  await ApplyJobForm.findOneAndDelete({_id: id})
+    .then(job => res.status(200).json(job))
+    .catch(err =>
+      res.status(401).json({ message: "Not successful", error: err.message })
+    )
+};
+
 exports.deactivateJob = async (req,  res) => {
   let id = req.params['id'];
   await ApplyJobForm.findOneAndUpdate({jobId: id}, {$set : {jobStatus : 'DECLINED'}});
