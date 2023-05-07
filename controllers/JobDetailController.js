@@ -2,6 +2,7 @@ const JobForm = require("../models/JobForm");
 const ApplyJobForm = require("../models/ApplyJobForm");
 const User = require("../models/User"); // User model
 const Profile = require("../models/Profile");
+const  ObjectID = require('mongodb').ObjectId;
 
 exports.postJob = (req, res) => {
   const data = req.body;
@@ -42,17 +43,17 @@ exports.getAllPostedJobs = async (req,  res) => {
 
 exports.applyJobForm = async (req, res) => {
   const data = req.body;
-  data['status'] = 'PENDING';
-  // const user = await User.findOne({ _id: data.userId });
-  // console.log("fs", user)
-  // data['personName'] = user.name;
-  const newJobDetails = new ApplyJobForm(data);
-      newJobDetails
-        .save()
-        .then(
-        res.json("Job applied successfuly")
-        )
-        .catch((err) => console.log(err));
+  data['applyStatus'] = 'APPLIED';
+  data['jobStatus'] = 'PENDING';
+
+  if (data.id == undefined || data.id == "") {
+    data.id = new ObjectID();
+  }
+  await ApplyJobForm.findOneAndUpdate({ "_id": data.id }, data, { upsert:true })
+  .then(
+    res.json("Job applied successfuly")
+  )
+  .catch((err) => console.log(err));
 }
 
 exports.getJobStatusForUser = async (req, res) => {
@@ -60,9 +61,9 @@ exports.getJobStatusForUser = async (req, res) => {
   const userId = req.params['userId'];
   const job = await ApplyJobForm.findOne({userId : userId, jobId : jobId})
   if (job) {
-    return res.status(200).json({id: job._id, status: job.status});
+    return res.status(200).json({id: job._id, applyStatus: job.applyStatus, jobStatus: job.jobStatus, description: job.description});
   } else {
-    return res.status(200).json({id: "", status: "APPLY"});
+    return res.status(200).json({id: "", applyStatus: "NOT_APPLIED", description: "", jobStatus: "NOT_APPLIED"});
   }
 }
 
@@ -72,7 +73,8 @@ exports.getAllAppliedJobs = async (req,  res) => {
       const jobFunction = jobs.map(job => {
         const container = {}
         container._id = job._id
-        container.status = job.status
+        container.jobStatus = job.jobStatus
+        container.applyStatus = job.applyStatus
         container.userId = job.userId
         container.personName = job.personName
         container.description = job.description
@@ -92,7 +94,8 @@ exports.getAppliedJobs = async (req,  res) => {
       const jobFunction = jobs.map(job => {
         const container = {}
         container._id = job._id
-        container.status = job.status
+        container.jobStatus = job.jobStatus
+        container.applyStatus = job.applyStatus
         container.userId = job.userId
         container.personName = job.personName
         container.description = job.description
@@ -112,7 +115,8 @@ exports.getAppliedJobsForUser = async (req,  res) => {
       const jobFunction = jobs.map(job => {
         const container = {}
         container._id = job._id
-        container.status = job.status
+        container.jobStatus = job.jobStatus
+        container.applyStatus = job.applyStatus
         container.userId = job.userId
         container.personName = job.personName
         container.description = job.description
@@ -127,16 +131,7 @@ exports.getAppliedJobsForUser = async (req,  res) => {
 
 exports.declineJobAplication = async (req,  res) => {
   let id = req.params['id'];
-  await ApplyJobForm.findOneAndUpdate({_id: id}, {$set : {status : 'DECLINE'}})
-    .then(job => res.status(200).json(job))
-    .catch(err =>
-      res.status(401).json({ message: "Not successful", error: err.message })
-    )
-};
-
-exports.deleteJobAplication = async (req,  res) => {
-  let id = req.params['id'];
-  await ApplyJobForm.findOneAndDelete({_id: id})
+  await ApplyJobForm.findOneAndUpdate({_id: id}, {$set : {applyStatus : 'NOT_APPLIED',jobStatus: 'NOT_APPLIED', description: ""}})
     .then(job => res.status(200).json(job))
     .catch(err =>
       res.status(401).json({ message: "Not successful", error: err.message })
@@ -145,7 +140,7 @@ exports.deleteJobAplication = async (req,  res) => {
 
 exports.deactivateJob = async (req,  res) => {
   let id = req.params['id'];
-  await ApplyJobForm.findOneAndUpdate({jobId: id}, {$set : {status : 'INACTIVE'}});
+  await ApplyJobForm.findOneAndUpdate({jobId: id}, {$set : {jobStatus : 'DECLINED'}});
   await JobForm.findOneAndUpdate({_id: id}, {$set : {status : 'INACTIVE'}})
     .then(job => res.status(200).json(job))
     .catch(err =>
@@ -155,7 +150,7 @@ exports.deactivateJob = async (req,  res) => {
 
 exports.acceptJobAplication = async (req,  res) => {
   let id = req.params['id'];
-  await ApplyJobForm.findOneAndUpdate({_id: id}, {$set : {status : 'ACCEPT'}})
+  await ApplyJobForm.findOneAndUpdate({_id: id}, {$set : {jobStatus : 'ACCEPTED'}})
     .then(job => res.status(200).json(job))
     .catch(err =>
       res.status(401).json({ message: "Not successful", error: err.message })

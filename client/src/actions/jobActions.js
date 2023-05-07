@@ -44,9 +44,9 @@ console.log(body);
     });
 };
 
-export const applyJobForm = ({ description, jobId, userId}) => (dispatch) => {
+export const applyJobForm = ({ description, jobId, userId, id}) => (dispatch) => {
   // Headers
-  const body = JSON.stringify({ description, jobId, userId});
+  const body = JSON.stringify({ description, jobId, userId, id});
   const headers = {
     headers: {
       "Content-Type": "application/json"

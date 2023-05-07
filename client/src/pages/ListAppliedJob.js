@@ -74,8 +74,27 @@ class ListAppliedJobs extends Component {
       return <Redirect to="/login" />
     }
 		const { DataisLoaded, items } = this.state;
+   
 		if (!DataisLoaded) return <div>
 			<h1> Pleease wait some time.... </h1> </div> ;
+    if (!items || items.length === 0) {
+      return (
+        <>
+        <div className="navbarMain">
+          <InnerNavbar></InnerNavbar>
+          </div>
+          <div className='divTable'>
+          <table>
+          <tr>
+          <th>Profile</th>
+          <th>Description</th>
+        </tr>
+        <h6>No data found...</h6>
+          </table>
+          </div>
+          </>
+      )
+    }
     return (
       <>
       <div className="navbarMain">

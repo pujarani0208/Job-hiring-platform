@@ -4,8 +4,12 @@ const ApplyJobFormSchema = new mongoose.Schema({
   jobId: {
     type: String,
     required: false
-},
-  status: {
+  },
+  jobStatus: {
+    type: String,
+    required: true
+  },
+  applyStatus: {
     type: String,
     required: true
   },

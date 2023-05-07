@@ -72,7 +72,27 @@ class JobDetails extends Component {
 		const { DataisLoaded, items } = this.state;
 		if (!DataisLoaded) return <div>
 			<h1> Pleease wait some time.... </h1> </div> ;
+    if (!items || items.length === 0) {
+      return (
+      <>
+      <div className="navbarMain">
+        <InnerNavbar></InnerNavbar>
+        </div>
+        <div className='divTable'>
+        <table>
+        <tr>
+          <th>Job Title</th>
+          <th>Company Name</th>
+          <th>Location</th>
+          <th>Other Details</th>
+          <th>Job Status</th>
+        </tr>
+        <h6>No data found...</h6>
 
+        </table>
+        </div>
+        </>
+    )}
     return (
       <>
       <div className="navbarMain">

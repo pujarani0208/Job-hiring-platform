@@ -31,7 +31,8 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
     description: "",
     personName: "",
     applyStatus: "",
-    status: 'APPLY',
+    jobStatus: "",
+    buttonStatus: 'APPLY',
   };
   const propTypes = {
     buttonClicked: PropTypes.func.isRequired,
@@ -45,7 +46,6 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
     userId: PropTypes.object.isRequired,
     declineJobAplication: PropTypes.func.isRequired,
     acceptJobAplication: PropTypes.func.isRequired,
-    
   };
   
   this.state = {
@@ -76,32 +76,44 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
         .then((res) => res.json())
         .then((json) => {
           this.setState({
-            applyStatus: json['status'],
-            id: json['id']
+            applyStatus: json['applyStatus'],
+            jobStatus: json['jobStatus'],
+            id: json['id'],
+            description: json['description'],
           });
-          if (this.state.applyStatus === "DECLINE") {
+          if (this.state.jobStatus === "DECLINE") {
             this.setState({
               showDeclineButton: false,
               showApplyButton: false,
             });
-          } else if (this.state.applyStatus === "PENDING") {
-            this.setState({
-              showDeclineButton: true,
-              showApplyButton: false,
-              status: 'Decline',
-            });
-          } else if (this.state.applyStatus === "ACCEPT") {
-            this.setState({
-              showDeclineButton: true,
-              showApplyButton: false,
-              status: 'Decline'
-            });
-          } else if (this.state.applyStatus === "APPLY") {
-            this.setState({
-              showDeclineButton: false,
-              showApplyButton: true,
-              status: 'Apply'
-            });
+          } else if (this.state.applyStatus === "APPLIED"){
+            if (this.state.id === "") {
+              this.setState({
+                showDeclineButton: false,
+                showApplyButton: true,
+                buttonStatus: 'Apply'
+              });
+            } else {
+              this.setState({
+                showDeclineButton: true,
+                showApplyButton: true,
+                buttonStatus: 'Edit' 
+              });
+            }
+          } else if (this.state.applyStatus === "NOT_APPLIED") {
+            if (this.state.id === "") {
+              this.setState({
+                showDeclineButton: false,
+                showApplyButton: true,
+                buttonStatus: 'Apply'
+              });
+            } else {
+              this.setState({
+                showDeclineButton: true,
+                showApplyButton: true,
+                buttonStatus: 'Apply' 
+              });
+            }
           }
         })
     }
@@ -120,7 +132,7 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
     // Redirects to Log In screen after a delay of 2secs if successfully registered
     if (status.id === "JOB_APPLIED") {
       setTimeout(() => {
-        <Redirect to="/getAllPostedJobs" />
+        <Redirect to="/applyJobForm" />
       }, 2000);
     }
   }
@@ -130,8 +142,10 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
     const {description} = this.state;
     const data = {description};
     data.userId = this.props.userId;
+    data.id = this.state.id;
     data.jobId = this.props.jobId;
     this.props.applyJobForm(data);
+
   };
   render() {
     let alert;
@@ -166,7 +180,7 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
     }
     return (
       <>
-          <td>{this.state.applyStatus} </td>
+          <td>{this.state.jobStatus} </td>
           <td><Collapse isOpen={this.state.visible}>
         {alert}
         <Form onSubmit={this.onSubmit} >
@@ -177,6 +191,7 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
                   id="description"
                   placeholder="Enter description"
                   className="mb-3"
+                  value = {this.state.description}
                   onChange={this.onChange}
                 />
                 </td>
@@ -198,7 +213,7 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
       </td>
       <td>
       {showApplyButton && 
-    <Button onClick={() => onButtonClick()}>{this.state.status}</Button>}
+    <Button onClick={() => onButtonClick()}>{this.state.buttonStatus}</Button>}
     </td>      
     </>
     )

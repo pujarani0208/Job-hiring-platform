@@ -1,11 +1,13 @@
 const User = require("../models/User");
 const Profile = require("../models/Profile");
+const  ObjectID = require('mongodb').ObjectId;
+
 
 exports.saveProfile = (req, res) => {
   const data = req.body;
   data['status'] = 'ACTIVE';
   if (data._id == undefined) {
-    data._id = new ObjectId();
+    data._id = new ObjectID(); 
 }
   Profile.findOneAndUpdate({ "_id":data._id }, data, { upsert:true })
     .then(
