@@ -33,7 +33,7 @@ console.log(body);
   axios
     .post("/api/jobs/postJob", JSON.parse(body), headers)
     .then((res) =>{
-      dispatch(returnStatus(res.data, res.status, JOB_POSTED));
+      dispatch(returnStatus(res.data, res.status, "JOB_POSTED_SUCCESSFULLY"));
     })
     .catch((err) => {
       dispatch(returnStatus(err.response.data, err.response.status, JOB_NOT_POSTED))

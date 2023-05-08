@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import { BrowserRouter} from 'react-router-dom';
 
 import {
   Button,
@@ -118,23 +119,29 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
         })
     }
    
-  componentDidUpdate(prevProps) {
-    const status = this.props.status;
-    // Changes status message if it is different from previous message
-    if (status !== prevProps.status) {
-      if (status.id === "JOB_APPLIED") {
-        this.setState({ msg: status.statusMsg.msg});
-      } else {
-        this.setState({ msg: this.props.status.statusMsg.msg });
-      }
-    }
-    // Redirects to Log In screen after a delay of 2secs if successfully registered
-    if (status.id === "JOB_APPLIED") {
-      return setTimeout(() => {
-        <ApplyJobForm jobId = {this.props.jobId} userId = {this.props.userId}></ApplyJobForm>
-      }, 2000);
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   const status = this.props.status;
+  //   console.log("ds",prevProps)
+  //   console.log("des",status)
+  //   // Changes status message if it is different from previous message
+  //   if (status !== prevProps.status) {
+  //     if (status.id === "JOB_APPLIED") {
+  //       this.setState({ msg: status.statusMsg.msg});
+  //     } else {
+  //       this.setState({ msg: this.props.status.statusMsg.msg });
+  //     }
+  //   }
+  //   // Redirects to Log In screen after a delay of 2secs if successfully registered
+  //   if (status.id === "JOB_APPLIED") {
+  //     return setTimeout(() => {
+  //        <>
+  //       <BrowserRouter>
+  //       <ApplyJobForm/>
+  //     </BrowserRouter>   
+  //       </>
+  //     }, 2000);
+  //   }
+  // }
 
   onSubmit = (e) => {
     e.preventDefault();

@@ -15,6 +15,7 @@ import {CCard,
   CCardTitle,
   CContainer,
   CCardText,} from '@coreui/react';
+import { hashHistory } from 'react-router';
 import InnerNavbar from './InnerNavbar';
 import PropTypes from "prop-types";
 import './style.css';

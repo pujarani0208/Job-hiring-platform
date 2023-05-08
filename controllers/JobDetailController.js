@@ -8,7 +8,6 @@ exports.postJob = async (req, res) => {
   const data = req.body;
   data['status'] = 'ACTIVE';
   let job;
-  console.log("fs", data);
   if (data.id === undefined || data.id === "") {
     data['id'] = undefined;
     const newJob = new JobForm(data);
@@ -16,7 +15,6 @@ exports.postJob = async (req, res) => {
   } else {
    job = await JobForm.findOneAndUpdate({ "_id": data.id }, data, { upsert:true })
   }
-  console.log("dsf", job);
   if (job) {
     res.status(200).json({msg: "Job posted successfuly", id: job._id})
   } else {
@@ -26,9 +24,9 @@ exports.postJob = async (req, res) => {
 exports.getJobForm = async (req,  res) => {
   let id = req.params['id'];
   await JobForm.findOne({_id: id})
-    .then(job => res.status(200).json(job))
+    .then(job => res.json(job))
     .catch(err =>
-      res.status(401).json({ message: "Not successful", error: err.message })
+      res.json({ message: "Not successful", error: err.message })
     )
 };
 

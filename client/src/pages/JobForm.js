@@ -17,7 +17,7 @@ import {
 } from "reactstrap";
 import PropTypes from "prop-types";
 import './style.css';
-import { Redirect } from 'react-router-dom'
+import { Redirect } from "react-router-dom";
 import InnerNavbar from './InnerNavbar';
 import { postJob } from '../actions/jobActions';
 import { logout } from '../actions/authActions';
@@ -26,10 +26,12 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
 export class JobForm extends Component {
   constructor(props) {
 		super(props);
+    
     this.state={
       value:this.props.location.state,
       id: this.props.location.id,
   }
+  
   const state = {
     msg: "",
     jobTitle: "",
@@ -59,7 +61,6 @@ export class JobForm extends Component {
   // Removes sign in and register buttons from homepage
   // upon mounting of Register component
   componentDidMount() {
-    this.props.buttonClicked();
     if(this.state.id !== undefined) {
     fetch(
       `http://localhost:3000/api/jobs/getJobForm/${this.state.id}`)
@@ -85,19 +86,19 @@ export class JobForm extends Component {
 
   componentDidUpdate(prevProps) {
     const status = this.props.status;
+
     // Changes status message if it is different from previous message
     if (status !== prevProps.status) {
-      if (status.id === "JOB_POSTED") {
+      if (status.id === "JOB_POSTED_SUCCESSFULLY") {
         this.setState({ msg: status.statusMsg.msg });
       } else {
         this.setState({ msg: this.props.status.statusMsg.msg });
       }
     }
-
     // Redirects to Log In screen after a delay of 2secs if successfully registered
-    if (status.id === "JOB_POSTED") {
+    if (status.id === "JOB_POSTED_SUCCESSFULLY") {
       setTimeout(() => {
-        return <Redirect to="/viewPostedJobs" />
+        return  this.props.history.push("/viewPostedJobs");
       }, 2000);
     }
   }
