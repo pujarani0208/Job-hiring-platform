@@ -111,7 +111,8 @@ class JobDetails extends Component {
         <InnerNavbar></InnerNavbar>
         </div>
         <div className='divTable'>
-        <table>
+        <table class="bp4-html-table 
+                bp4-html-table-bordered bp4-interactive">
           <tr><Link to={{
                 pathname: "/postJob",
              }}>

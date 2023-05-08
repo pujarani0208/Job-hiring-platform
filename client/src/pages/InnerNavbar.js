@@ -50,9 +50,6 @@ render() {
 		<NavLink to='/profile' activeStyle>
 			About
 		</NavLink>
-		{/* {user.userType === 'HIRE' &&<NavLink to='/postJob' activeStyle>
-			Post Job
-		</NavLink>} */}
 		{user.userType === 'GET_HIRED' && <NavLink to='/getAllPostedJobs' activeStyle>
 			Find jobs
 		</NavLink>}

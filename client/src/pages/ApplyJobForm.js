@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 import {
   Button,
@@ -129,11 +128,10 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
         this.setState({ msg: this.props.status.statusMsg.msg });
       }
     }
-
     // Redirects to Log In screen after a delay of 2secs if successfully registered
     if (status.id === "JOB_APPLIED") {
       return setTimeout(() => {
-        this.props.history.push("/getAllPostedJobs");
+        <ApplyJobForm jobId = {this.props.jobId} userId = {this.props.userId}></ApplyJobForm>
       }, 2000);
     }
   }
@@ -196,7 +194,6 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
       <>
           <td>{this.state.jobStatus} </td>
           <td><Collapse isOpen={this.state.visible}>
-        {alert}
         <Form onSubmit={this.onSubmit} >
           <td>
             <Input
@@ -227,7 +224,7 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
       <td>
       {showApplyButton && 
     <Button onClick={() => onButtonClick()}>{this.state.buttonStatus}</Button>}
-    </td>      
+    </td> 
     </>
     )
   }

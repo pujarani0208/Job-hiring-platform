@@ -97,7 +97,7 @@ export class JobForm extends Component {
     // Redirects to Log In screen after a delay of 2secs if successfully registered
     if (status.id === "JOB_POSTED") {
       setTimeout(() => {
-        this.props.history.push("/viewPostedJobs");
+        return <Redirect to="/viewPostedJobs" />
       }, 2000);
     }
   }
@@ -144,7 +144,6 @@ onSubmit = (e) => {
     if(!this.props.authState.isAuthenticated) {
       return <Redirect to="/login" />
     }
-
     return (
       <>
       <div className="navbarMain">
