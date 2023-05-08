@@ -4,17 +4,33 @@ const User = require("../models/User"); // User model
 const Profile = require("../models/Profile");
 const  ObjectID = require('mongodb').ObjectId;
 
-exports.postJob = (req, res) => {
+exports.postJob = async (req, res) => {
   const data = req.body;
-        data['status'] = 'ACTIVE';
-        const newJobDetails = new JobForm(data);
-            newJobDetails
-              .save()
-              .then(
-                res.json("Successfully posted new job")
-              )
-              .catch((err) => console.log(err));
+  data['status'] = 'ACTIVE';
+  let job;
+  console.log("fs", data);
+  if (data.id === undefined || data.id === "") {
+    data['id'] = undefined;
+    const newJob = new JobForm(data);
+    job = await newJob.save();
+  } else {
+   job = await JobForm.findOneAndUpdate({ "_id": data.id }, data, { upsert:true })
+  }
+  console.log("dsf", job);
+  if (job) {
+    res.status(200).json({msg: "Job posted successfuly", id: job._id})
+  } else {
+    res.status(401).json({message: "Job not posted successfuly", error: "Unsuccess"})
+  }
 }
+exports.getJobForm = async (req,  res) => {
+  let id = req.params['id'];
+  await JobForm.findOne({_id: id})
+    .then(job => res.status(200).json(job))
+    .catch(err =>
+      res.status(401).json({ message: "Not successful", error: err.message })
+    )
+};
 
 exports.getAllPostedJobs = async (req,  res) => {
   await JobForm.find({})
@@ -70,7 +86,6 @@ exports.applyJobForm = async (req, res) => {
   const data = req.body;
   data['applyStatus'] = 'APPLIED';
   data['jobStatus'] = 'PENDING';
-  console.log("fds",data);
   let job;
   if (data.id === undefined || data.id === "") {
     data['id'] = undefined;

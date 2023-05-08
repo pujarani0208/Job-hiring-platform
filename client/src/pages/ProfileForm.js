@@ -98,7 +98,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
     // Redirects to Log In screen after a delay of 2secs if successfully registered
     if (status.id === "PROFILE_SAVED") {
       setTimeout(() => {
-        this.props.history.push("/profile");
+        this.props.history.push("/about");
       }, 2000);
     }
   }
@@ -120,7 +120,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
     } else if (this.state.msg && this.props.status.respCode === 200) {
       alert = (
         <Alert color="success">
-          {this.state.msg} <br /> Redirecting to Log In screen
+          {this.state.msg} <br /> Redirecting to About page
         </Alert>
       );
     }
@@ -138,6 +138,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
         </div>
     <div className={className}>
     <Card>
+    <CardTitle> <h2><strong>Profile</strong></h2></CardTitle>
         <CardBody >
         {alert}
           <Form onSubmit={this.onSubmit} >

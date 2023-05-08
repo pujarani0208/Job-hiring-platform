@@ -24,7 +24,13 @@ import { logout } from '../actions/authActions';
 import { buttonClicked, buttonReset } from "../actions/uiActions";
 
 export class JobForm extends Component {
-  state = {
+  constructor(props) {
+		super(props);
+    this.state={
+      value:this.props.location.state,
+      id: this.props.location.id,
+  }
+  const state = {
     msg: "",
     jobTitle: "",
     openings: "",
@@ -37,7 +43,7 @@ export class JobForm extends Component {
     jobAddress: "",
     email: "",
   };
-  static propTypes = {
+  const propTypes = {
     buttonClicked: PropTypes.func.isRequired,
     button: PropTypes.bool,
     authState: PropTypes.object.isRequired,
@@ -45,33 +51,55 @@ export class JobForm extends Component {
     logout: PropTypes.func.isRequired,
     applyJobForm: PropTypes.func.isRequired,
     status: PropTypes.object.isRequired,
-    registerJobs: PropTypes.func.isRequired
+    registerJobs: PropTypes.func.isRequired,
+    jobId: PropTypes.object.isRequired,
+    id: PropTypes.object.isRequired,
   };
-
+  }
   // Removes sign in and register buttons from homepage
   // upon mounting of Register component
   componentDidMount() {
     this.props.buttonClicked();
+    if(this.state.id !== undefined) {
+    fetch(
+      `http://localhost:3000/api/jobs/getJobForm/${this.state.id}`)
+        .then((res) => res.json())
+        .then((json) => {
+          if (json) {
+          this.setState({
+            jobTitle: json.jobTitle,
+            openings: json.openings,
+            location: json.location,
+            salary: json.salary,
+            description: json.description,
+            companyName: json.companyName,
+            contactNo: json.contactNo,
+            contactPersonName: json.contactPersonName,
+            jobAddress: json.jobAddress,
+            email: json.email,
+          });
+          }
+        })
+    }
   }
 
   componentDidUpdate(prevProps) {
     const status = this.props.status;
-    console.log('hew', status);
     // Changes status message if it is different from previous message
     if (status !== prevProps.status) {
       if (status.id === "JOB_POSTED") {
-        this.setState({ msg: status.statusMsg });
+        this.setState({ msg: status.statusMsg.msg });
       } else {
-        this.setState({ msg: this.props.status.statusMsg });
+        this.setState({ msg: this.props.status.statusMsg.msg });
       }
     }
 
-    // // Redirects to Log In screen after a delay of 2secs if successfully registered
-    // if (status.id === "JOB_POSTED") {
-    //   setTimeout(() => {
-    //     this.props.history.push("/getAllPostedJobs");
-    //   }, 2033000);
-    // }
+    // Redirects to Log In screen after a delay of 2secs if successfully registered
+    if (status.id === "JOB_POSTED") {
+      setTimeout(() => {
+        this.props.history.push("/viewPostedJobs");
+      }, 2000);
+    }
   }
 
   onLogout = (e) => {
@@ -90,6 +118,7 @@ onSubmit = (e) => {
     const {jobTitle, openings, location, salary, description, companyName, contactNo, contactPersonName, jobAddress, email} = this.state;
     const data = {jobTitle, openings, location, salary, description, companyName, contactNo, contactPersonName, jobAddress, email};
     data.userId = user.id;
+    data.id = this.state.id;
     console.log(data);
     this.props.postJob(data);
   };
@@ -104,7 +133,7 @@ onSubmit = (e) => {
     } else if (this.state.msg && this.props.status.respCode === 200) {
       alert = (
         <Alert color="success">
-          {this.state.msg} <br /> Redirecting to Log In screen
+          {this.state.msg} <br /> Redirecting to view Jobs
         </Alert>
       );
     }
@@ -137,6 +166,7 @@ onSubmit = (e) => {
                   id="companyName"
                   placeholder="Enter Company Name"
                   className="mb-3"
+                  value = {this.state.companyName}
                   onChange={this.onChange}
                 />
           <Label for="jobTitle">Job Title</Label>
@@ -145,6 +175,7 @@ onSubmit = (e) => {
                   name="jobTitle"
                   id="jobTitle"
                   placeholder="Enter job title"
+                  value = {this.state.jobTitle}
                   className="mb-3"
                   onChange={this.onChange}
                 />
@@ -155,6 +186,7 @@ onSubmit = (e) => {
                   id="openings"
                   placeholder="Enter job openings"
                   className="mb-3"
+                  value = {this.state.openings}
                   onChange={this.onChange}
                 />
             
@@ -165,6 +197,7 @@ onSubmit = (e) => {
                   id="salary"
                   placeholder="Enter Salary"
                   className="mb-3"
+                  value = {this.state.salary}
                   onChange={this.onChange}
                 />
               <Label for="description">Job description</Label>
@@ -174,6 +207,7 @@ onSubmit = (e) => {
                   id="description"
                   placeholder="Enter Job Description"
                   className="mb-3"
+                  value = {this.state.description}
                   onChange={this.onChange}
                 />
                 </FormGroup>
@@ -186,6 +220,7 @@ onSubmit = (e) => {
                   name="contactNo"
                   id="contactNo"
                   placeholder="Enter Contact No"
+                  value = {this.state.contactNo}
                   className="mb-3"
                   onChange={this.onChange}
                 />
@@ -196,6 +231,7 @@ onSubmit = (e) => {
                   id="contactPersonName"
                   placeholder="Contact Person Name"
                   className="mb-3"
+                  value = {this.state.contactPersonName}
                   onChange={this.onChange}
                 />
                 <Label for="email">E-mail</Label>
@@ -205,6 +241,7 @@ onSubmit = (e) => {
               id="email"
               placeholder="you@youremail.com"
               className="mb-3"
+              value = {this.state.email}
               onChange={this.onChange}
             />
             <Label for="location">Job Location</Label>
@@ -214,6 +251,7 @@ onSubmit = (e) => {
                   id="jobTlocationitle"
                   placeholder="Enter job location"
                   className="mb-3"
+                  value = {this.state.location}
                   onChange={this.onChange}
                 />
             <Label for="jobAddress">Job Address</Label>
@@ -223,6 +261,7 @@ onSubmit = (e) => {
                   id="jobAddress"
                   placeholder="Enter Job Address"
                   className="mb-3"
+                  value = {this.state.jobAddress}
                   onChange={this.onChange}
                 />
             </FormGroup>

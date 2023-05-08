@@ -52,7 +52,6 @@ class JobDetails extends Component {
 	// execute the code
 	componentDidMount() {
     const {user} = this.props.authState;
-    console.log("d", user);
     if (user) {
 		fetch(
 `http://localhost:3000/api/jobs/getAllPostedJobForUser/${user.id}`)
@@ -82,9 +81,21 @@ class JobDetails extends Component {
       <div className="navbarMain">
         <InnerNavbar></InnerNavbar>
         </div>
+        <div className='divStyle'>
+        <Link to={{
+                pathname: "/postJob",
+             }}>
+            <CButton color="primary">Post Job</CButton>
+               </Link>
+        </div>
         <div className='divTable'>
         <table>
         <tr>
+        <tr><Link to={{
+                pathname: "/postJob",
+             }}>
+            <CButton color="primary">Post Job</CButton>
+               </Link></tr>
           <th>Job Title</th>
           <th>Company Name</th>
           <th>Location</th>
@@ -101,6 +112,11 @@ class JobDetails extends Component {
         </div>
         <div className='divTable'>
         <table>
+          <tr><Link to={{
+                pathname: "/postJob",
+             }}>
+            <CButton color="primary">Post Job</CButton>
+               </Link></tr>
         <tr>
           <th>Job Title</th>
           <th>Company Name</th>
@@ -130,15 +146,21 @@ class JobDetails extends Component {
                   </Popup></td>
               <td>{item.companyName }</td>
               <td>{item.location}</td>
+              <td><Link to={{
+                pathname: "/postJob",
+                id: item._id
+             }}>
+            <CButton color="primary">Edit</CButton>
+               </Link></td>
               <td>
               <Link to={{
                 pathname: "/getAllAppliedJobs",
                 state: {jobId : item._id, userId : user.id} // your data array of objects
              }}>
-            <td><CButton  color="primary" onClick={() => this.props.deactivateJob(`${item._id}`)}>Deactivate</CButton></td>
             <CButton color="primary">View Applicants</CButton>
                </Link>
               </td>
+              <td><CButton  color="primary" onClick={() => this.props.deactivateJob(`${item._id}`)}>Deactivate</CButton></td>
             </tr>
                 ))
             }

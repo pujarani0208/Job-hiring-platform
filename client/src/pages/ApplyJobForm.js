@@ -133,10 +133,7 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
     // Redirects to Log In screen after a delay of 2secs if successfully registered
     if (status.id === "JOB_APPLIED") {
       return setTimeout(() => {
-        <Redirect to={{
-          pathname: '/applyForm',
-          jobId : prevProps.jobId, userId : prevProps.userId
-        }}/>
+        this.props.history.push("/getAllPostedJobs");
       }, 2000);
     }
   }

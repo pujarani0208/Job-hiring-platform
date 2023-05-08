@@ -20,9 +20,9 @@ import {
 //axios.defaults.baseURL = "https://demos.shawndsilva.com/sessions-auth-app"
 
 //Register New User
-export const postJob = ({ userId, jobTitle, openings, location, salary, description, companyName, contactNo, contactPersonName, jobAddress, email }) => (dispatch) => {
+export const postJob = ({ userId, jobTitle, id, openings, location, salary, description, companyName, contactNo, contactPersonName, jobAddress, email }) => (dispatch) => {
   // Headers
-  const body = JSON.stringify({ userId, jobTitle, openings, location, salary, description, companyName, contactNo, contactPersonName, jobAddress, email });
+  const body = JSON.stringify({ userId, jobTitle, id, openings, location, salary, description, companyName, contactNo, contactPersonName, jobAddress, email });
   const headers = {
     headers: {
       "Content-Type": "application/json"
