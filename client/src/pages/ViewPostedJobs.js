@@ -79,23 +79,28 @@ class JobDetails extends Component {
       return (
       <>
       <div className="navbarMain">
-        <InnerNavbar></InnerNavbar>
+        <InnerNavbar></InnerNavbar>      
         </div>
-        <div className='divStyle'>
-        <Link to={{
+        <div className='divTable'>
+        <table>
+        <tr> 
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        <th><div className='rightButton'>
+          <Link to={{
                 pathname: "/postJob",
              }}>
             <CButton color="primary">Post Job</CButton>
                </Link>
-        </div>
-        <div className='divTable'>
-        <table>
-        <tr>
-        <tr><Link to={{
-                pathname: "/postJob",
-             }}>
-            <CButton color="primary">Post Job</CButton>
-               </Link></tr>
+               </div>
+               </th>
+               </tr>
+          <tr>
           <th>Job Title</th>
           <th>Company Name</th>
           <th>Location</th>
@@ -111,13 +116,23 @@ class JobDetails extends Component {
         <InnerNavbar></InnerNavbar>
         </div>
         <div className='divTable'>
-        <table class="bp4-html-table 
-                bp4-html-table-bordered bp4-interactive">
-          <tr><Link to={{
+        <table>
+        <tr> 
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        <th>
+          <Link to={{
                 pathname: "/postJob",
              }}>
-            <CButton color="primary">Post Job</CButton>
-               </Link></tr>
+            <CButton color="info">Post Job</CButton>
+               </Link>
+               </th>
+               </tr>
         <tr>
           <th>Job Title</th>
           <th>Company Name</th>
@@ -127,7 +142,7 @@ class JobDetails extends Component {
                 items.map((item) => (
                   <tr key = { item._id } > 
               <td><Popup trigger=
-                {<h6  color="dark">{item.jobTitle}<AiFillInfoCircle /></h6>}
+                {<h6  color="info">{item.jobTitle}<AiFillInfoCircle /></h6>}
                 position="center">
                   <CCard color= {`${item.status}` === 'ACCEPT' ? 'light' : 'light'} textColor= {`${item.status}` === 'ACCEPT' ? 'primary' : 'secondary'} >
                   <CCardHeader> <h5>{item.companyName }</h5></CCardHeader>
@@ -147,21 +162,25 @@ class JobDetails extends Component {
                   </Popup></td>
               <td>{item.companyName }</td>
               <td>{item.location}</td>
-              <td><Link to={{
-                pathname: "/postJob",
-                id: item._id
-             }}>
-            <CButton color="primary">Edit</CButton>
-               </Link></td>
               <td>
               <Link to={{
                 pathname: "/getAllAppliedJobs",
                 state: {jobId : item._id, userId : user.id} // your data array of objects
              }}>
-            <CButton color="primary">View Applicants</CButton>
+            <CButton color="light">View Applicants</CButton>
                </Link>
               </td>
-              <td><CButton  color="primary" onClick={() => this.props.deactivateJob(`${item._id}`)}>Deactivate</CButton></td>
+              <td></td>
+              <td></td>
+
+              <td><CButton  color="warning" onClick={() => this.props.deactivateJob(`${item._id}`)}>Deactivate</CButton></td>
+              <td><Link to={{
+                pathname: "/postJob",
+                id: item._id
+             }}>
+              
+            <CButton color="info">Edit</CButton>
+               </Link></td>
             </tr>
                 ))
             }

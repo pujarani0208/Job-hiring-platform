@@ -105,28 +105,27 @@ class ListAppliedJobs extends Component {
         <div className='divTable'>
         <table>
         <tr>
-          <th>Profile</th>
+          <th></th>
+          <th></th>
           <th>Description</th>
           <th>Job status</th>
           <th>Apply status</th>
         </tr>
         {
           items.map((item) => ( 
-              <tr key = { item._id } > 
-              <td> { item.personName }
-              {/* <Button onClick={() => onButtonClick()}>Profile</Button> */}
-                  {/* <Collapse isOpen={this.state.visible}> */}
+              <tr key={ item._id }> 
+              <td>{item.personName }</td>
+                <td>
               <ViewProfile userId = {item.userId}></ViewProfile>
-                  {/* </Collapse> */}
               </td>
-              <td>{ item.description } </td>
+              <td>{ item.description }</td>
               <td>{ item.jobStatus } </td>
               <td>{ item.applyStatus } </td>
-              <td>{item.jobStatus !== 'ACCEPTED' && <CButton color="light" onClick={() => {
+              <td>{item.jobStatus !== 'ACCEPTED' && <CButton color="info" onClick={() => {
                 this.props.acceptJobAplication(`${item._id}`) 
                 this.componentDidMount()
               }}>Accept</CButton>}</td>
-              <td>{ item.jobStatus !== 'REJECTED' && <CButton color="secondary" onClick={() => {
+              <td>{ item.jobStatus !== 'REJECTED' && <CButton color="warning" onClick={() => {
                 this.props.declineJobAplicant(`${item._id}`)
                 this.componentDidMount()
               }}>Decline</CButton>}</td>
