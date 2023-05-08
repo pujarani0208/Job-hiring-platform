@@ -38,6 +38,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
     firstName: "",
     lastName: "",
     contactNo: "",
+    buttonStatus: 'Save Profile',
     address: "",
     email: "",
     dob: "",
@@ -58,7 +59,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
     `http://localhost:3000/api/profile/getProfileByUserId/${user.id}`)
       .then((res) => res.json())
       .then((json) => {
-        if (json) {
+        if (Object.keys(json).length !== 0) {
         this.setState({
             id : json._id,
             gender: json.gender,
@@ -69,8 +70,13 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
             contactNo: json.contactNo,
             address: json.address,
             email: json.email,
+            buttonStatus : 'Edit Profile',
             dob: json.dob,
         });
+        } else {
+          this.setState({
+            buttonStatus : 'Save Profile'
+          })
         }
       })
   }
@@ -138,7 +144,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
         </div>
     <div className={className}>
     <Card>
-    <CardTitle> <h2><strong>Profile</strong></h2></CardTitle>
+    <CardTitle> <h2><strong>{this.state.buttonStatus}</strong></h2></CardTitle>
         <CardBody >
         {alert}
           <Form onSubmit={this.onSubmit} >
@@ -223,7 +229,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
                   type="text"
                   name="gender"
                   id="gender"
-                  placeholder=""
+                  placeholder="Gender"
                   className="mb-3"
                   value = {this.state.gender}
                   onChange={this.onChange}
@@ -233,7 +239,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
                   type="text"
                   name="description"
                   id="description"
-                  placeholder=""
+                  placeholder="description"
                   className="mb-3"
                   value = {this.state.description}
                   onChange={this.onChange}
@@ -244,7 +250,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
             <FormGroup>
             <Button color="dark" style={{ marginTop: "2rem" }} block>
                { this.props.loading ?
-               <span >Applying job.. <Spinner size="sm" color="light" /></span> : <span>Save Profile</span>}
+               <span >Applying job.. <Spinner size="sm" color="light" /></span> : <span>{this.state.buttonStatus}</span>}
             </Button>
           </FormGroup>
         </Form>

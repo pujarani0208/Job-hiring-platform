@@ -37,6 +37,7 @@ export class JobForm extends Component {
     jobTitle: "",
     openings: "",
     location: "",
+    buttonStatus: "Post Job",
     salary: "",
     description: "",
     companyName: "",
@@ -72,6 +73,7 @@ export class JobForm extends Component {
             openings: json.openings,
             location: json.location,
             salary: json.salary,
+            buttonStatus: 'Edit Job',
             description: json.description,
             companyName: json.companyName,
             contactNo: json.contactNo,
@@ -81,6 +83,10 @@ export class JobForm extends Component {
           });
           }
         })
+    } else {
+      this.setState({
+        buttonStatus: 'Post Job',
+      })
     }
   }
 
@@ -152,7 +158,7 @@ onSubmit = (e) => {
         </div>
     <div className={className}>
     <Card>
-    <CardTitle> <h2><strong>Post Job</strong></h2></CardTitle>
+    <CardTitle> <h2><strong>{this.state.buttonStatus}</strong></h2></CardTitle>
         <CardBody >
             {alert}
           <Form onSubmit={this.onSubmit}>
@@ -190,7 +196,7 @@ onSubmit = (e) => {
                   onChange={this.onChange}
                 />
             
-            <Label for="salary">Job Location</Label>
+            <Label for="salary"> Salary</Label>
             <Input
                   type="text"
                   name="salary"
@@ -248,7 +254,7 @@ onSubmit = (e) => {
             <Input
                   type="text"
                   name="location"
-                  id="jobTlocationitle"
+                  id="location"
                   placeholder="Enter job location"
                   className="mb-3"
                   value = {this.state.location}
@@ -269,7 +275,7 @@ onSubmit = (e) => {
           </Row>
             <Button color="dark" style={{ marginTop: "2rem" }} block>
                { this.props.loading ?
-               <span >Posting job.. <Spinner size="sm" color="light" /></span> : <span>Posting Job</span>}
+               <span >Posting job.. <Spinner size="sm" color="light" /></span> : <span>{this.state.buttonStatus}</span>}
             </Button>
           
         </Form>
