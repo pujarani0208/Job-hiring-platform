@@ -3,7 +3,7 @@ import { returnStatus } from "./statusActions";
 
 import {
   GET_PROFILE,
-  SAVE_PROFILE,
+  PROFILE_SAVED,
   IS_LOADING,
   PROFILE_ERROR,
   PROFILE_NOT_SAVED
@@ -22,7 +22,7 @@ export const saveProfile = ({userId, gender ,_id,  uniqueIdentity, description, 
     axios
       .post("/api/profile/saveProfile", JSON.parse(body), headers)
       .then((res) =>{
-        dispatch(returnStatus(res.data, res.status, SAVE_PROFILE));
+        dispatch(returnStatus(res.data, res.status, 'PROFILE_SAVED_SUCCESSFULLY'));
       })
       .catch((err) => {
         dispatch(returnStatus(err.response.data, err.response.status, PROFILE_NOT_SAVED))

@@ -94,19 +94,20 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
     const status = this.props.status;
     // Changes status message if it is different from previous message
     if (status !== prevProps.status) {
-      if (status.id === "PROFILE_SAVED") {
+      if (status.id === "PROFILE_SAVED_SUCCESSFULLY") {
         this.setState({ msg: status.statusMsg });
       } else {
         this.setState({ msg: this.props.status.statusMsg });
       }
+      if (status.id === "PROFILE_SAVED_SUCCESSFULLY") {
+        setTimeout(() => {
+          this.props.history.push("/profile");
+        }, 2000);
+      }
     }
 
     // Redirects to Log In screen after a delay of 2secs if successfully registered
-    if (status.id === "PROFILE_SAVED") {
-      setTimeout(() => {
-        this.props.history.push("/about");
-      }, 2000);
-    }
+    
   }
 
   onSubmit = (e) => {

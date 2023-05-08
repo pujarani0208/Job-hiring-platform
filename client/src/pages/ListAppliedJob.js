@@ -122,8 +122,14 @@ class ListAppliedJobs extends Component {
               <td>{ item.description } </td>
               <td>{ item.jobStatus } </td>
               <td>{ item.applyStatus } </td>
-              <td>{item.jobStatus !== 'ACCEPTED' && <CButton color="light" onClick={() => this.props.acceptJobAplication(`${item._id}`)}>Accept</CButton>}</td>
-              <td>{ item.jobStatus !== 'REJECTED' && <CButton color="secondary" onClick={() => this.props.declineJobAplicant(`${item._id}`)}>Decline</CButton>}</td>
+              <td>{item.jobStatus !== 'ACCEPTED' && <CButton color="light" onClick={() => {
+                this.props.acceptJobAplication(`${item._id}`) 
+                this.componentDidMount()
+              }}>Accept</CButton>}</td>
+              <td>{ item.jobStatus !== 'REJECTED' && <CButton color="secondary" onClick={() => {
+                this.props.declineJobAplicant(`${item._id}`)
+                this.componentDidMount()
+              }}>Decline</CButton>}</td>
                   {/* <CCard  class='jobCard' color= {`${item.status}` === 'ACCEPT' ? 'light' : 'light'} textColor= {`${item.status}` === 'ACCEPT' ? 'primary' : 'secondary'} > */}
             </tr>
             ))
