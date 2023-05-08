@@ -82,7 +82,7 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
             jobStatus: json['jobStatus'],
             description: json['description'],
           });
-          if (this.state.jobStatus === "DECLINE") {
+          if (this.state.jobStatus === "REJECTED") {
             this.setState({
               showDeclineButton: false,
               showApplyButton: false,

@@ -13,6 +13,7 @@ import JobDetails from './pages/JobDetails';
 import ApplyJobForm from './pages/ApplyJobForm';
 import ListAppliedJob from './pages/ListAppliedJob';
 import ListUsersJob from './pages/ListUsersJob';
+import ViewPostedJobs from './pages/ViewPostedJobs';
 import About from './pages/About';
 import ProfileForm from './pages/ProfileForm';
 import ViewProfile from './pages/ViewProfile';
@@ -33,6 +34,7 @@ class App extends Component {
               <Route exact path ="/postJob" component={JobForm}/>
               <Route exact path ="/applyJobForm" component={ApplyJobForm}/>
               <Route exact path ="/getAllPostedJobs" component={JobDetails}/>
+              <Route exact path ="/viewPostedJobs" component={ViewPostedJobs}/>
               <Route exact path ="/getAllAppliedJobs" component={ListAppliedJob}/>
               <Route exact path ="/getListUserJobs" component={ListUsersJob}/>
             </Switch>

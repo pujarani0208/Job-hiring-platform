@@ -120,8 +120,8 @@ class Register extends Component {
             {alert}
             <Form onSubmit={this.onSubmit}>
               <FormGroup className="text-center">
-              <Input class="BtnGroup-item btn" type="button" name="userType" id="userType" placeholder="Hire" value="Hire" selected onClick={this.onChange}/>
-              <Input class="BtnGroup-item btn" type="button" name="userType" id="userType"  placeholder="Get Hired" value ="Get Hired" onClick={this.onChange}/>
+              <Input class="BtnGroup-item btn" type="button" name="userType" id="userType" placeholder="Hire" value="HIRE" selected onClick={this.onChange}/>
+              <Input class="BtnGroup-item btn" type="button" name="userType" id="userType"  placeholder="Get Hired" value ="GET_HIRED" onClick={this.onChange}/>
                 <Label for="name">Name</Label>
                 <Input
                   type="text"

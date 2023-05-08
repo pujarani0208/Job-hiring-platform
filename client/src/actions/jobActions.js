@@ -128,6 +128,21 @@ export const  declineJobAplication = (id) => async (dispatch) => {
   });
 }
 
+export const  declineJobAplicant = (id) => async (dispatch) => {
+  axios
+  .get(`/api/jobs/declineJobAplicant/${id}`)
+  .then((res) =>{
+    dispatch(returnStatus(res.data, res.status, GET_JOBS));
+  })
+  .catch((err) => {
+    dispatch(returnStatus(err.response.data, err.response.status, GET_JOBS_FAILS))
+    dispatch({
+      type: GET_JOBS_FAILS
+    });
+    dispatch({ type: IS_LOADING })
+  });
+}
+
 export const  acceptJobAplication = (id) => async (dispatch) => {
   axios
   .get(`/api/jobs/acceptJobAplication/${id}`)

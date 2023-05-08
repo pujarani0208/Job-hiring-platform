@@ -30,7 +30,7 @@ import './style.css';
 import { Redirect } from 'react-router-dom'
 import { buttonReset} from '../actions/uiActions';
 import { logout } from '../actions/authActions';
-import { declineJobAplication , acceptJobAplication} from '../actions/jobActions';
+import { declineJobAplicant , acceptJobAplication} from '../actions/jobActions';
 import ApplyJobForm from './ApplyJobForm';
 import ViewProfile from './ViewProfile';
 
@@ -44,7 +44,7 @@ class ListAppliedJobs extends Component {
       authState: PropTypes.object.isRequired,
       buttonReset: PropTypes.func.isRequired,
       logout: PropTypes.func.isRequired,
-      declineJobAplication: PropTypes.func.isRequired,
+      declineJobAplicant: PropTypes.func.isRequired,
       acceptJobAplication: PropTypes.func.isRequired,
     };
   
@@ -88,6 +88,8 @@ class ListAppliedJobs extends Component {
           <tr>
           <th>Profile</th>
           <th>Description</th>
+          <th>Job status</th>
+          <th>Apply status</th>
         </tr>
         <h6>No data found...</h6>
           </table>
@@ -105,6 +107,8 @@ class ListAppliedJobs extends Component {
         <tr>
           <th>Profile</th>
           <th>Description</th>
+          <th>Job status</th>
+          <th>Apply status</th>
         </tr>
         {
           items.map((item) => ( 
@@ -116,9 +120,10 @@ class ListAppliedJobs extends Component {
                   {/* </Collapse> */}
               </td>
               <td>{ item.description } </td>
-              <td>{item.location}</td>
-              <td><CButton color="light" onClick={() => this.props.acceptJobAplication(`${item._id}`)}>Accept</CButton></td>
-              <td><CButton color="light" onClick={() => this.props.declineJobAplication(`${item._id}`)}>Decline</CButton></td>
+              <td>{ item.jobStatus } </td>
+              <td>{ item.applyStatus } </td>
+              <td>{item.jobStatus !== 'ACCEPTED' && <CButton color="light" onClick={() => this.props.acceptJobAplication(`${item._id}`)}>Accept</CButton>}</td>
+              <td>{ item.jobStatus !== 'REJECTED' && <CButton color="secondary" onClick={() => this.props.declineJobAplicant(`${item._id}`)}>Decline</CButton>}</td>
                   {/* <CCard  class='jobCard' color= {`${item.status}` === 'ACCEPT' ? 'light' : 'light'} textColor= {`${item.status}` === 'ACCEPT' ? 'primary' : 'secondary'} > */}
             </tr>
             ))
@@ -135,4 +140,4 @@ const mapStateToProps = (state) => ({ //Maps state to redux store as props
   authState: state.auth,
 });
 
-export default connect(mapStateToProps, { logout, buttonReset, declineJobAplication, acceptJobAplication })(ListAppliedJobs);
+export default connect(mapStateToProps, { logout, buttonReset, declineJobAplicant, acceptJobAplication })(ListAppliedJobs);

@@ -51,8 +51,11 @@ class JobDetails extends Component {
 	// ComponentDidMount is used to
 	// execute the code
 	componentDidMount() {
+    const {user} = this.props.authState;
+    console.log("d", user);
+    if (user) {
 		fetch(
-`http://localhost:3000/api/jobs/getAllPostedJobs`)
+`http://localhost:3000/api/jobs/getAllPostedJobForUser/${user.id}`)
 			.then((res) => res.json())
 			.then((json) => {
 				this.setState({
@@ -60,6 +63,7 @@ class JobDetails extends Component {
 					DataisLoaded: true
 				});
 			})
+    }
 	}
 
 	render() {
@@ -84,9 +88,6 @@ class JobDetails extends Component {
           <th>Job Title</th>
           <th>Company Name</th>
           <th>Location</th>
-          <th>Job Status</th>
-          <th></th>
-          <th></th>
         </tr>
         <h6>No data found...</h6>
         </table>
@@ -104,9 +105,6 @@ class JobDetails extends Component {
           <th>Job Title</th>
           <th>Company Name</th>
           <th>Location</th>
-          <th>Job Status</th>
-          <th></th>
-          <th></th>
         </tr>
             {
                 items.map((item) => (
@@ -131,9 +129,15 @@ class JobDetails extends Component {
                   </CCard>               
                   </Popup></td>
               <td>{item.companyName }</td>
-              <td>{item.location}</td>            
+              <td>{item.location}</td>
               <td>
-              <ApplyJobForm jobId = {item._id} userId = {user.id}></ApplyJobForm>
+              <Link to={{
+                pathname: "/getAllAppliedJobs",
+                state: {jobId : item._id, userId : user.id} // your data array of objects
+             }}>
+            <td><CButton  color="primary" onClick={() => this.props.deactivateJob(`${item._id}`)}>Deactivate</CButton></td>
+            <CButton color="primary">View Applicants</CButton>
+               </Link>
               </td>
             </tr>
                 ))

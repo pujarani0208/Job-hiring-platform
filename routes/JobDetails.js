@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { postJob, getAllPostedJobs, deactivateJob, getJobStatusForUser,
-     applyJobForm, getAllAppliedJobs, getAppliedJobs, declineJobAplication,
-      deleteJobAplication, acceptJobAplication, getAppliedJobsForUser } = require("../controllers/JobDetailController");
+     applyJobForm, getAllAppliedJobs, getAppliedJobs, declineJobAplication, declineJobAplicant,
+      deleteJobAplication, acceptJobAplication, getAppliedJobsForUser, getAllPostedJobForUser } = require("../controllers/JobDetailController");
 
 // Registers a new User
 router.post("/postJob", postJob );
@@ -11,7 +11,9 @@ router.post("/applyJobForm", applyJobForm)
 router.get("/getAllAppliedJobs", getAllAppliedJobs)
 router.get("/getAppliedJobs/:jobId", getAppliedJobs)
 router.get("/getAppliedJobsForUser/:userId", getAppliedJobsForUser)
+router.get("/getAllPostedJobForUser/:userId", getAllPostedJobForUser)
 router.get("/declineJobAplication/:id", declineJobAplication)
+router.get("/declineJobAplicant/:id", declineJobAplicant)
 router.get("/deleteJobAplication/:id", deleteJobAplication)
 router.get("/deactivateJob/:id", deactivateJob)
 router.get("/acceptJobAplication/:id", acceptJobAplication)

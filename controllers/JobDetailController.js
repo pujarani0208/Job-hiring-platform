@@ -41,6 +41,31 @@ exports.getAllPostedJobs = async (req,  res) => {
     )
 };
 
+exports.getAllPostedJobForUser = async (req,  res) => {
+  let userId = req.params['userId'];
+  await JobForm.find({userId: userId})
+    .then(JobForms => {
+      const jobFunction = JobForms.map(job => {
+        const container = {}
+        container._id = job._id
+        container.jobTitle = job.jobTitle
+        container.openings = job.openings
+        container.location = job.location
+        container.salary = job.salary
+        container.description = job.description
+        container.companyName = job.companyName
+        container.contactNo = job.contactNo
+        container.contactPersonProfile = job.contactPersonProfile
+        container.jobAddress = job.jobAddress
+        container.email = job.email
+        return container
+      })
+      res.status(200).json(jobFunction)
+    })
+    .catch(err =>
+      res.status(401).json({ message: "Not successful", error: err.message })
+    )
+};
 exports.applyJobForm = async (req, res) => {
   const data = req.body;
   data['applyStatus'] = 'APPLIED';
@@ -143,6 +168,15 @@ exports.declineJobAplication = async (req,  res) => {
     )
 };
 
+exports.declineJobAplicant = async (req,  res) => {
+  let id = req.params['id'];
+  await ApplyJobForm.findOneAndUpdate({_id: id}, {$set : {applyStatus : 'APPLIED',jobStatus: 'REJECTED', description: ""}})
+    .then(job => res.status(200).json(job))
+    .catch(err =>
+      res.status(401).json({ message: "Not successful", error: err.message })
+    )
+};
+
 exports.deleteJobAplication = async (req,  res) => {
   let id = req.params['id'];
   await ApplyJobForm.findOneAndDelete({_id: id})
@@ -154,7 +188,7 @@ exports.deleteJobAplication = async (req,  res) => {
 
 exports.deactivateJob = async (req,  res) => {
   let id = req.params['id'];
-  await ApplyJobForm.findOneAndUpdate({jobId: id}, {$set : {jobStatus : 'DECLINED'}});
+  await ApplyJobForm.findOneAndUpdate({jobId: id}, {$set : {jobStatus : 'REJECTED'}});
   await JobForm.findOneAndUpdate({_id: id}, {$set : {status : 'INACTIVE'}})
     .then(job => res.status(200).json(job))
     .catch(err =>

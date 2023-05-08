@@ -123,6 +123,7 @@ onSubmit = (e) => {
         </div>
     <div className={className}>
     <Card>
+    <CardTitle> <h2><strong>Post Job</strong></h2></CardTitle>
         <CardBody >
             {alert}
           <Form onSubmit={this.onSubmit}>

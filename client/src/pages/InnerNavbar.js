@@ -50,12 +50,15 @@ render() {
 		<NavLink to='/profile' activeStyle>
 			About
 		</NavLink>
-		<NavLink to='/postJob' activeStyle>
+		{user.userType === 'HIRE' &&<NavLink to='/postJob' activeStyle>
 			Post Job
-		</NavLink>
-		<NavLink to='/getAllPostedJobs' activeStyle>
+		</NavLink>}
+		{user.userType === 'GET_HIRED' && <NavLink to='/getAllPostedJobs' activeStyle>
 			Find jobs
-		</NavLink>
+		</NavLink>}
+		{user.userType === 'HIRE' && <NavLink to='/viewPostedJobs' activeStyle>
+			View jobs
+		</NavLink>}
 		<NavLink to='/profileForm' activeStyle>
 			Profile
 		</NavLink>
