@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import {
   Button,
@@ -22,7 +23,7 @@ import { applyJobForm } from '../actions/jobActions';
 import { logout } from '../actions/authActions';
 import { buttonClicked, buttonReset } from "../actions/uiActions";
 import { declineJobAplication , acceptJobAplication} from '../actions/jobActions';
-
+ 
  export class ApplyJobForm extends Component {
   constructor(props) {
 		super(props);
@@ -33,6 +34,7 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
     applyStatus: "",
     jobStatus: "",
     buttonStatus: 'APPLY',
+    id: "",
   };
   const propTypes = {
     buttonClicked: PropTypes.func.isRequired,
@@ -50,7 +52,6 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
   
   this.state = {
     visible: false,
-    id: "",
     showDeclineButton: false,
     showApplyButton: false,
   };
@@ -76,9 +77,9 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
         .then((res) => res.json())
         .then((json) => {
           this.setState({
+            id : json['id'],
             applyStatus: json['applyStatus'],
             jobStatus: json['jobStatus'],
-            id: json['id'],
             description: json['description'],
           });
           if (this.state.jobStatus === "DECLINE") {
@@ -109,7 +110,7 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
               });
             } else {
               this.setState({
-                showDeclineButton: true,
+                showDeclineButton: false,
                 showApplyButton: true,
                 buttonStatus: 'Apply' 
               });
@@ -117,22 +118,25 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
           }
         })
     }
-
+   
   componentDidUpdate(prevProps) {
     const status = this.props.status;
     // Changes status message if it is different from previous message
     if (status !== prevProps.status) {
       if (status.id === "JOB_APPLIED") {
-        this.setState({ msg: status.statusMsg });
+        this.setState({ msg: status.statusMsg.msg});
       } else {
-        this.setState({ msg: this.props.status.statusMsg });
+        this.setState({ msg: this.props.status.statusMsg.msg });
       }
     }
 
     // Redirects to Log In screen after a delay of 2secs if successfully registered
     if (status.id === "JOB_APPLIED") {
-      setTimeout(() => {
-        <Redirect to="/applyJobForm" />
+      return setTimeout(() => {
+        <Redirect to={{
+          pathname: '/applyForm',
+          jobId : prevProps.jobId, userId : prevProps.userId
+        }}/>
       }, 2000);
     }
   }
@@ -144,20 +148,33 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
     data.userId = this.props.userId;
     data.id = this.state.id;
     data.jobId = this.props.jobId;
+    this.setState({
+      visible : !this.state.visible,
+      applyStatus: "APPLIED",
+      jobStatus: "PENDING",
+      buttonStatus: 'Edit',
+      showDeclineButton: true,
+      showApplyButton: true,
+      })
     this.props.applyJobForm(data);
-
+    this.componentDidMount();
   };
+
+  onDecline = (id) => {
+    this.props.declineJobAplication(id);
+    this.componentDidMount();
+  }
   render() {
     let alert;
-    // if (this.state.msg && this.props.status.respCode >= 400) {
-    //   alert = <Alert color="danger">{this.state.msg}</Alert>;
-    // } else if (this.state.msg && this.props.status.respCode === 200) {
-    //   alert = (
-    //     <Alert color="success">
-    //       {this.state.msg} <br /> Redirecting to Log In screen
-    //     </Alert>
-    //   );
-    // }
+    if (this.state.msg && this.props.status.respCode >= 400) {
+      alert = <Alert color="danger">{this.state.msg}</Alert>;
+    } else if (this.state.msg && this.props.status.respCode === 200) {
+      alert = (
+        <Alert color="success">
+          {this.state.msg}
+        </Alert>
+      );
+    }
     const {visible}  = this.state;
     const {showDeclineButton} = this.state;
     const {showApplyButton} = this.state;
@@ -202,13 +219,12 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
             </td>
             <td>
             {<Button onClick={() => onCancelClick()}>Cancel</Button>}
-
             </td>
         </Form>
     </Collapse></td>
     <td>
       {showDeclineButton &&
-        <Button color="light" onClick={() => this.props.declineJobAplication(`${this.state.id}`)}>Decline</Button>
+        <Button color="light" onClick={() => this.onDecline(`${this.state.id}`)}>Decline</Button>
       }
       </td>
       <td>

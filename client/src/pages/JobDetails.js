@@ -85,10 +85,10 @@ class JobDetails extends Component {
           <th>Company Name</th>
           <th>Location</th>
           <th>Other Details</th>
+          <th></th>
           <th>Job Status</th>
         </tr>
         <h6>No data found...</h6>
-
         </table>
         </div>
         </>
@@ -105,9 +105,8 @@ class JobDetails extends Component {
           <th>Company Name</th>
           <th>Location</th>
           <th>Other Details</th>
-          <th></th>
-          <th></th>
           <th>Job Status</th>
+          <th></th>
 
         </tr>
             {
@@ -134,12 +133,12 @@ class JobDetails extends Component {
                   </Popup></td>
               <td>{item.companyName }</td>
               <td>{item.location}</td>
-              <td><CButton  color="primary" onClick={() => this.props.deactivateJob(`${item._id}`)}>Deactivate</CButton></td>
               <td>
               <Link to={{
                 pathname: "/getAllAppliedJobs",
                 state: {jobId : item._id, userId : user.id} // your data array of objects
              }}>
+            <td><CButton  color="primary" onClick={() => this.props.deactivateJob(`${item._id}`)}>Deactivate</CButton></td>
             <CButton color="primary">View Applicants</CButton>
                </Link>
               </td>

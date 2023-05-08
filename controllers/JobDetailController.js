@@ -45,15 +45,20 @@ exports.applyJobForm = async (req, res) => {
   const data = req.body;
   data['applyStatus'] = 'APPLIED';
   data['jobStatus'] = 'PENDING';
-
-  if (data.id == undefined || data.id == "") {
-    data.id = new ObjectID();
+  console.log("fds",data);
+  let job;
+  if (data.id === undefined || data.id === "") {
+    data['id'] = undefined;
+    const newJob = new ApplyJobForm(data);
+    job = newJob.save();
+  } else {
+   job = await ApplyJobForm.findOneAndUpdate({ "_id": data.id }, data, { upsert:true })
   }
-  await ApplyJobForm.findOneAndUpdate({ "_id": data.id }, data, { upsert:true })
-  .then(
-    res.json("Job applied successfuly")
-  )
-  .catch((err) => console.log(err));
+  if (job) {
+    res.status(200).json({msg: "Job applied successfuly", id: job._id})
+  } else {
+    res.status(401).json({message: "Job not applied successfuly", error: "Unsuccess"})
+  }
 }
 
 exports.getJobStatusForUser = async (req, res) => {
@@ -89,7 +94,7 @@ exports.getAllAppliedJobs = async (req,  res) => {
 
 exports.getAppliedJobs = async (req,  res) => {
   let jobId = req.params['jobId'];
-  await ApplyJobForm.find({jobId : jobId})
+  await ApplyJobForm.find({jobId : jobId, applyStatus : 'APPLIED'})
     .then(jobs => {
       const jobFunction = jobs.map(job => {
         const container = {}
