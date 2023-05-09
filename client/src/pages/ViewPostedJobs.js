@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Route, Switch, Link } from 'react-router-dom'
 import Popup from 'reactjs-popup';
+
 import {
   Button,
 } from "reactstrap";
@@ -81,16 +82,16 @@ class JobDetails extends Component {
       <div className="navbarMain">
         <InnerNavbar></InnerNavbar>      
         </div>
-        <div className='divTable'>
+        <div className='divTableButtons'>
         <table>
         <tr> 
-          <th colSpan={8}></th>
+          <th colSpan={4}></th>
           
         <th>
           <Link to={{
                 pathname: "/postJob",
              }}>
-            <CButton color="primary">Post Job</CButton>
+            <CButton color="primary">Post A New Job</CButton>
                </Link>
                </th>
                </tr>
@@ -98,7 +99,6 @@ class JobDetails extends Component {
           <th>Job Title</th>
           <th>Company Name</th>
           <th colSpan={4}>Location</th>
-          <th></th>
         </tr>
         <h6>No data found...</h6>
         </table>
@@ -110,15 +110,16 @@ class JobDetails extends Component {
       <div className="navbarMain">
         <InnerNavbar></InnerNavbar>
         </div>
-        <div className='divTable'>
+        <div className='divTableButton'>
         <table>
         <tr> 
-          <th colSpan={8}></th>
+        <th colSpan={4}></th>
+
         <th>
           <Link to={{
                 pathname: "/postJob",
              }}>
-            <CButton color="info">Post Job</CButton>
+            <CButton color="info">Post A New Job</CButton>
                </Link>
                </th>
                </tr>
@@ -126,8 +127,6 @@ class JobDetails extends Component {
           <th>Job Title</th>
           <th>Company Name</th>
           <th colSpan={4}>Location</th>
-          <th colSpan={4}></th>
-          <th colSpan={4}></th>
         </tr>
             {
                 items.map((item) => (
@@ -153,7 +152,6 @@ class JobDetails extends Component {
                   </Popup></td>
               <td>{item.companyName }</td>
               <td>{item.location}</td>
-              <td></td>
               <td>
               <Link to={{
                 pathname: "/getAllAppliedJobs",
@@ -162,17 +160,16 @@ class JobDetails extends Component {
             <CButton color="light">View Applicants</CButton>
                </Link>
               </td>
-              <td></td>
-              <td></td>
-
-              <td><CButton  color="warning" onClick={() => this.props.deactivateJob(`${item._id}`)}>Deactivate</CButton></td>
-              <td><Link to={{
+              <td>
+              <Link to={{
                 pathname: "/postJob",
                 id: item._id
              }}>
               
             <CButton color="info">Edit</CButton>
-               </Link></td>
+               </Link>
+                <CButton color="warning" onClick={() => this.props.deactivateJob(`${item._id}`)}>Deactivate</CButton>
+              </td>
             </tr>
                 ))
             }

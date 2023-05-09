@@ -83,13 +83,13 @@ class ListAppliedJobs extends Component {
         <div className="navbarMain">
           <InnerNavbar></InnerNavbar>
           </div>
-          <div className='divTable'>
+          <div className='divTableProfile'>
           <table>
           <tr>
-          <th>Profile</th>
-          <th>Description</th>
+          <th></th>
+          <th>Email</th>
+          <th>Contact No.</th>
           <th>Job status</th>
-          <th>Apply status</th>
         </tr>
         <h6>No data found...</h6>
           </table>
@@ -102,7 +102,7 @@ class ListAppliedJobs extends Component {
       <div className="navbarMain">
         <InnerNavbar></InnerNavbar>
         </div>
-        <div className='divTable'>
+        <div className='divTableProfile'>
         <table>
         <tr>
           <th></th>
@@ -118,8 +118,8 @@ class ListAppliedJobs extends Component {
               <td>{item.jobStatus !== 'ACCEPTED' && <CButton color="info" onClick={() => {
                 this.props.acceptJobAplication(`${item._id}`) 
                 this.componentDidMount()
-              }}>Accept</CButton>}</td>
-              <td>{ item.jobStatus !== 'REJECTED' && <CButton color="warning" onClick={() => {
+              }}>Accept</CButton>}
+              { item.jobStatus !== 'REJECTED' && <CButton color="warning" onClick={() => {
                 this.props.declineJobAplicant(`${item._id}`)
                 this.componentDidMount()
               }}>Decline</CButton>}</td>

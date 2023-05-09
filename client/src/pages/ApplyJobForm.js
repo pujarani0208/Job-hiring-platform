@@ -216,11 +216,11 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
     }
     return (
       <>          
-          <td colSpan={2}>{this.state.jobStatus} </td>
-          <td colSpan={3}>
+          <td>{this.state.jobStatus} </td>
+          <td>
           <Collapse isOpen={this.state.visible}>
         <Form onSubmit={this.onSubmit} >
-          <td colspan={3}>
+          <td>
           <Input
                   type="text"
                   name="description"
@@ -230,29 +230,23 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
                   value = {this.state.description}
                   onChange={this.onChange}
                 />
-          <td colspan="2"><Button color="info" style={{ marginTop: "2rem" }} block>
+          <td><Button color="info" style={{ marginTop: "2rem" }} block>
                { this.props.loading ?
                <span >Applying job.. <Spinner size="sm" color="light" /></span> : <span>Submit</span>}
             </Button></td>
             </td>
-            <td colspan="2">
+            <td>
             {<Button color = "warning" onClick={() => onCancelClick()}>Cancel</Button>}
             </td>
         </Form>
     </Collapse>
     </td>
-    <td colspan={2}>
+    <td>
     {showDeclineButton &&
-          <td colspan={2}>
         <Button color="warning" onClick={() => this.onDecline(`${this.state.id}`)}>Decline</Button>
-        </td>
       }
-    <td colspan={4}>
       {showApplyButton && this.state.buttonStatus === 'Apply' &&
-          <td colspan={2}>
-    <Button color = "info" onClick={() => this.onJobApply()}>{this.state.buttonStatus}</Button></td> }
-      </td>
-     
+    <Button color = "info" onClick={() => this.onJobApply()}>{this.state.buttonStatus}</Button> }     
       </td>
      
     </>

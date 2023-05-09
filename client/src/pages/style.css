@@ -27,39 +27,50 @@
   transform: translate(-50%, -40%);
 }
 
-.divTable {
+.divTableButton {
+  display: block;
   width: 100%;
-  height: 100vh;
-  vertical-align: top;
-  text-align: left;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  position: absolute;
+  transform: translate(+5%, +8%);
 }
-  
+
+.divTableProfile {
+  display: block;
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  position: absolute;
+  transform: translate(+5%, +100%);
+}
+
+.divTable {
+  display: block;
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  position: absolute;
+  transform: translate(+2%, +10%);
+}
 table {
-  width: 75%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
   text-align: left;
   position: relative;
-  top: 15%;
-  left: 10%;
   vertical-align: top;
 }
   
 th {
   text-align: left;
   vertical-align: top;
+  font-size: 18px;
+  padding-bottom: 1rem;
 }
   
 td {
   text-align: left;  
   vertical-align: top;
-}
-
-.outer
-{
-    width:100%;
-    text-align: center;
-}
-.inner
-{
-    display: inline-block;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
 }

@@ -108,7 +108,7 @@ class JobDetails extends Component {
           <th>Location</th>
           <th>Contact</th>
           <th>Email</th>
-          <th text-align="right" position= "relative" colSpan={2}> Job Status</th>
+          <th> Job Status</th>
         </tr>
             {
                 items.map((item) => (

@@ -15,6 +15,7 @@
     "@coreui/icons": "^3.0.1",
     "@coreui/icons-react": "^2.1.0",
     "@coreui/react": "^4.7.0",
+    "@coreui/react-pro": "^4.11.1",
     "@emotion/css": "^11.10.6",
     "@hapi/joi": "^16.1.8",
     "@headlessui/react": "^1.7.14",
