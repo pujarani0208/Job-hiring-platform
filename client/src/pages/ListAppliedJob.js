@@ -91,7 +91,9 @@ class ListAppliedJobs extends Component {
           <th>Contact No.</th>
           <th>Job status</th>
         </tr>
+        <tr>
         <h6>No data found...</h6>
+        </tr>
           </table>
           </div>
           </>
