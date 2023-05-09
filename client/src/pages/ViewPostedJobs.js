@@ -84,26 +84,21 @@ class JobDetails extends Component {
         <div className='divTable'>
         <table>
         <tr> 
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-        <th><div className='rightButton'>
+          <th colSpan={8}></th>
+          
+        <th>
           <Link to={{
                 pathname: "/postJob",
              }}>
             <CButton color="primary">Post Job</CButton>
                </Link>
-               </div>
                </th>
                </tr>
           <tr>
           <th>Job Title</th>
           <th>Company Name</th>
-          <th>Location</th>
+          <th colSpan={4}>Location</th>
+          <th></th>
         </tr>
         <h6>No data found...</h6>
         </table>
@@ -118,13 +113,7 @@ class JobDetails extends Component {
         <div className='divTable'>
         <table>
         <tr> 
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
+          <th colSpan={8}></th>
         <th>
           <Link to={{
                 pathname: "/postJob",
@@ -136,7 +125,9 @@ class JobDetails extends Component {
         <tr>
           <th>Job Title</th>
           <th>Company Name</th>
-          <th>Location</th>
+          <th colSpan={4}>Location</th>
+          <th colSpan={4}></th>
+          <th colSpan={4}></th>
         </tr>
             {
                 items.map((item) => (
@@ -162,6 +153,7 @@ class JobDetails extends Component {
                   </Popup></td>
               <td>{item.companyName }</td>
               <td>{item.location}</td>
+              <td></td>
               <td>
               <Link to={{
                 pathname: "/getAllAppliedJobs",

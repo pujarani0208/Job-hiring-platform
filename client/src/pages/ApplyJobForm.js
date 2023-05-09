@@ -162,6 +162,23 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
     this.componentDidMount();
   };
 
+  onJobApply = () => {
+    const {description} = this.state;
+    const data = {description};
+    data.userId = this.props.userId;
+    data.id = this.state.id;
+    data.jobId = this.props.jobId;
+    this.setState({
+      visible : false,
+      applyStatus: "APPLIED",
+      jobStatus: "PENDING",
+      buttonStatus: 'Edit',
+      showDeclineButton: true,
+      showApplyButton: false,
+      })
+    this.props.applyJobForm(data);
+    this.componentDidMount();
+  };
   onDecline = (id) => {
     this.props.declineJobAplication(id);
     this.componentDidMount();
@@ -198,12 +215,13 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
       return <Redirect to="/login" />
     }
     return (
-      <>
-          <td>{this.state.jobStatus} </td>
-          <td><Collapse isOpen={this.state.visible}>
+      <>          
+          <td colSpan={2}>{this.state.jobStatus} </td>
+          <td colSpan={3}>
+          <Collapse isOpen={this.state.visible}>
         <Form onSubmit={this.onSubmit} >
-          <td>
-            <Input
+          <td colspan={3}>
+          <Input
                   type="text"
                   name="description"
                   id="description"
@@ -212,26 +230,31 @@ import { declineJobAplication , acceptJobAplication} from '../actions/jobActions
                   value = {this.state.description}
                   onChange={this.onChange}
                 />
-                </td>
-          <td><Button color="dark" style={{ marginTop: "2rem" }} block>
+          <td colspan="2"><Button color="info" style={{ marginTop: "2rem" }} block>
                { this.props.loading ?
                <span >Applying job.. <Spinner size="sm" color="light" /></span> : <span>Submit</span>}
-            </Button>
+            </Button></td>
             </td>
-            <td>
-            {<Button onClick={() => onCancelClick()}>Cancel</Button>}
+            <td colspan="2">
+            {<Button color = "warning" onClick={() => onCancelClick()}>Cancel</Button>}
             </td>
         </Form>
-    </Collapse></td>
-    <td>
-      {showDeclineButton &&
-        <Button color="light" onClick={() => this.onDecline(`${this.state.id}`)}>Decline</Button>
+    </Collapse>
+    </td>
+    <td colspan={2}>
+    {showDeclineButton &&
+          <td colspan={2}>
+        <Button color="warning" onClick={() => this.onDecline(`${this.state.id}`)}>Decline</Button>
+        </td>
       }
+    <td colspan={4}>
+      {showApplyButton && this.state.buttonStatus === 'Apply' &&
+          <td colspan={2}>
+    <Button color = "info" onClick={() => this.onJobApply()}>{this.state.buttonStatus}</Button></td> }
       </td>
-      <td>
-      {showApplyButton && 
-    <Button onClick={() => onButtonClick()}>{this.state.buttonStatus}</Button>}
-    </td> 
+     
+      </td>
+     
     </>
     )
   }

@@ -78,8 +78,7 @@ class ViewProfile extends Component {
 			<h1> Pleease wait some time.... </h1> </div> ;
     return (
       <>
-      {
-          <ol key = { item._id } >
+          {<ol key = { item._id } >
           <Popup trigger=
           {<h5  color="dark">{ item.firstName } {item.lastName}<CiUser/></h5>}
                 position="center">
@@ -96,8 +95,10 @@ class ViewProfile extends Component {
           </CCardBody>
           </CCard>
           </Popup>
-          </ol>
-        }
+          </ol>}
+          <td>{ item.email }</td>
+          <td>{ item.contactNo }</td>
+        
       </>
   )
 }

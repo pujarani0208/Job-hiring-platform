@@ -106,21 +106,15 @@ class ListAppliedJobs extends Component {
         <table>
         <tr>
           <th></th>
-          <th></th>
-          <th>Description</th>
+          <th>Email</th>
+          <th>Contact No.</th>
           <th>Job status</th>
-          <th>Apply status</th>
         </tr>
         {
           items.map((item) => ( 
               <tr key={ item._id }> 
-              <td>{item.personName }</td>
-                <td>
               <ViewProfile userId = {item.userId}></ViewProfile>
-              </td>
-              <td>{ item.description }</td>
               <td>{ item.jobStatus } </td>
-              <td>{ item.applyStatus } </td>
               <td>{item.jobStatus !== 'ACCEPTED' && <CButton color="info" onClick={() => {
                 this.props.acceptJobAplication(`${item._id}`) 
                 this.componentDidMount()

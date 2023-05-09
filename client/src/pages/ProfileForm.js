@@ -145,7 +145,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
         </div>
     <div className={className}>
     <Card>
-    <CardTitle> <h2><strong>{this.state.buttonStatus}</strong></h2></CardTitle>
+    <CardTitle> <h2 ><strong>{this.state.buttonStatus}</strong></h2></CardTitle>
         <CardBody >
         {alert}
           <Form onSubmit={this.onSubmit} >
@@ -249,9 +249,9 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
             </Col>
             </Row>
             <FormGroup>
-            <Button color="dark" style={{ marginTop: "2rem" }} block>
+            <Button color="info" style={{ marginTop: "2rem" }} block>
                { this.props.loading ?
-               <span >Applying job.. <Spinner size="sm" color="light" /></span> : <span>{this.state.buttonStatus}</span>}
+               <span >Applying job.. <Spinner size="sm" color="info" /></span> : <span>{this.state.buttonStatus}</span>}
             </Button>
           </FormGroup>
         </Form>

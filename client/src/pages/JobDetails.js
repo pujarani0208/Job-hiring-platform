@@ -104,10 +104,11 @@ class JobDetails extends Component {
         <tr>
           <th>Job Title</th>
           <th>Company Name</th>
+          <th>Salary</th>
           <th>Location</th>
-          <th>Job Status</th>
-          <th></th>
-          <th></th>
+          <th>Contact</th>
+          <th>Email</th>
+          <th text-align="right" position= "relative" colSpan={2}> Job Status</th>
         </tr>
             {
                 items.map((item) => (
@@ -132,10 +133,11 @@ class JobDetails extends Component {
                   </CCard>               
                   </Popup></td>
               <td>{item.companyName }</td>
-              <td>{item.location}</td>            
-              <td>
+              <td>{item.salary }</td>
+              <td>{item.location}</td>   
+              <td>{item.contactNo}</td>   
+              <td>{item.email}</td>   
               <ApplyJobForm jobId = {item._id} userId = {user.id}></ApplyJobForm>
-              </td>
             </tr>
                 ))
             }
