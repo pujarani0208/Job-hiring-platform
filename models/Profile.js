@@ -9,6 +9,14 @@ const ProfileSchema = new mongoose.Schema({
     type: String,
     required: true
 },
+  jobExperience: {
+  type: String,
+  required: false
+},
+company: {
+  type: String,
+  required: false
+},
   gender: {
     type: String,
     required: true

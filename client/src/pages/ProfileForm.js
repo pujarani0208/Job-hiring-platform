@@ -42,6 +42,9 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
     address: "",
     email: "",
     dob: "",
+    jobExperience: "0",
+    company: "",
+    errors: {},
   };
   const propTypes = {
     buttonClicked: PropTypes.func.isRequired,
@@ -71,7 +74,9 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
             address: json.address,
             email: json.email,
             buttonStatus : 'Edit Profile',
-            dob: json.dob,
+            dob:  json.dob,
+            jobExperience: json.jobExperience,
+            company: json.company,
         });
         } else {
           this.setState({
@@ -85,6 +90,53 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
     this.props.buttonReset();
     this.props.logout();
   };
+  handleValidation() {
+    let formIsValid = true;
+    const errors = {};
+
+    //Name
+    if (this.state.firstName) {
+      formIsValid = false;
+      errors['firstName'] = "Cannot be empty";
+    }
+
+    if (typeof this.state.firstName !== "undefined") {
+      if (!this.state.firstName.match(/^[a-zA-Z]+$/)) {
+        formIsValid = false;
+        errors['firstName'] = "Only letters";
+      }
+    }
+
+    //Email
+    if (!this.state.email) {
+      formIsValid = false;
+      errors['email'] = "Cannot be empty";
+    }
+
+    if (typeof this.state.email !== "undefined") {
+      let lastAtPos = this.state.email.lastIndexOf("@");
+      let lastDotPos = this.state.email.lastIndexOf(".");
+
+      if (
+        !(
+          lastAtPos < lastDotPos &&
+          lastAtPos > 0 &&
+          this.state.email.indexOf("@@") == -1 &&
+          lastDotPos > 2 &&
+          this.state.email.length - lastDotPos > 2
+        )
+      ) {
+        formIsValid = false;
+        errors['email'] = "Email is not valid";
+      }
+    }
+    
+    this.setState({
+      errors :  errors
+    })
+    console.log("vf",  errors)
+    return formIsValid;
+  }
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
@@ -112,12 +164,18 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
 
   onSubmit = (e) => {
     e.preventDefault();
-    const {user} = this.props.authState;
-    const {gender , uniqueIdentity, description, firstName, lastName, contactNo, address, dob, email} = this.state;
-    const data = {gender , uniqueIdentity, description, firstName, lastName, contactNo, address, dob, email};
-    data.userId = user.id;
-    data._id = this.state.id
-    this.props.saveProfile(data);
+
+    // if (this.handleValidation()) {
+      const {user} = this.props.authState;
+      const {gender , uniqueIdentity, company, description, firstName, lastName, jobExperience, contactNo, address, dob, email} = this.state;
+      const data = {gender , uniqueIdentity, company, description, firstName, jobExperience, lastName, contactNo, address, dob, email};
+      data.userId = user.id;
+      data._id = this.state.id
+      this.props.saveProfile(data);    
+    // } else {
+    //   alert("Form has errors.");
+    // }
+
   };
   render() {
     let className = "divStyle";
@@ -131,13 +189,16 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
         </Alert>
       );
     }
-
+    let {errors} = this.state;
+    console.log("cd", errors)
     if (!this.props.button) {
       className = "formStyle";
     }
     if(!this.props.authState.isAuthenticated) {
       return <Redirect to="/login" />
     }
+    const {user} = this.props.authState;
+
     return (
       <>
       <div className="navbarMain">
@@ -161,7 +222,8 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
                   placeholder="Enter your First name"
                   className="mb-3"
                   onChange={this.onChange}
-                />
+                  />
+          {errors !== undefined && <span style={{ color: "red" }}>{errors['firstName']}</span>}
             <Label for="uniqueIdentity">Unique Identity Number</Label>
           <Input
                   type="text"
@@ -192,6 +254,28 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
               value = {this.state.email}
               onChange={this.onChange}
             />
+            {errors !== undefined && <span style={{ color: "red" }}>{errors['email']}</span>}
+
+            {user.userType === 'GET_HIRED' && <Label for="jobExperience">Experience Years</Label>}
+            {user.userType === 'GET_HIRED' && <Input
+              type="jobExperience"
+              name="jobExperience"
+              id="jobExperience"
+              placeholder="Years"
+              className="mb-3"
+              value = {this.state.jobExperience}
+              onChange={this.onChange}
+            />}
+            {user.userType === 'HIRE' && <Label for="company">Company</Label>}
+            {user.userType === 'HIRE' && <Input
+              type="company"
+              name="company"
+              id="company"
+              placeholder="Company Name"
+              className="mb-3"
+              value = {this.state.company}
+              onChange={this.onChange}
+            />}
             </FormGroup>
           </Col>
                 <Col xs="auto">

@@ -120,8 +120,30 @@ class Register extends Component {
             {alert}
             <Form onSubmit={this.onSubmit}>
               <FormGroup className="text-center">
-              <Input class="BtnGroup-item btn" type="button" name="userType" id="userType" placeholder="Hire" value="HIRE" selected onClick={this.onChange}/>
-              <Input class="BtnGroup-item btn" type="button" name="userType" id="userType"  placeholder="Get Hired" value ="GET_HIRED" onClick={this.onChange}/>
+              <Label for="userType">Select User Type</Label>
+                <div className="form-inline justify-content-center">
+                <Label for="userType">Get Hired</Label>
+                <Input
+                  type="radio"
+                  name="userType"
+                  id="userType"
+                  placeholder="Get Hired"
+                  value ="GET_HIRED"
+                  size="lg"
+                  defaultChecked
+                  onChange={this.onChange}
+                />
+                <Label for="userType">Hire</Label>
+                <Input
+                  type="radio"
+                  name="userType"
+                  id="userType"
+                  placeholder="Hire"
+                  value="HIRE"
+                  size="lg"
+                  onChange={this.onChange}
+                />
+                </div>
                 <Label for="name">Name</Label>
                 <Input
                   type="text"
@@ -132,7 +154,6 @@ class Register extends Component {
                   size="lg"
                   onChange={this.onChange}
                 />
-
                 <Label for="email">E-mail</Label>
                 <Input
                   type="email"
@@ -143,7 +164,6 @@ class Register extends Component {
                   size="lg"
                   onChange={this.onChange}
                 />
-
                 <Label for="password">Password</Label>
                 <Input
                   type="password"

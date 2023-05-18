@@ -79,25 +79,33 @@ class ViewProfile extends Component {
     return (
       <>
           {<ol key = { item._id } >
+            <td>
           <Popup trigger=
           {<h5  color="dark">{ item.firstName } {item.lastName}<CiUser/></h5>}
                 position="center">
+
           <CCard color= {`${item.status}` === 'ACCEPT' ? 'light' : 'light'} textColor= {`${item.status}` === 'ACCEPT' ? 'primary' : 'secondary'} >
           <CCardHeader> <h5>{ item.firstName } {item.lastName}</h5></CCardHeader>
           <CCardBody>
           <CCardTitle>{ item.email }</CCardTitle>
           <CCardText>
+          <p className='paraBreak'>
           Contact Number: { item.contactNo }<br></br>
+          Dob: {item.dob}<br></br>
+          Age: {item.age}<br></br>
           Description: { item.description }<br></br>
           ContactNo: { item.contactNo }<br></br>
-          Address: { item.address }<br></br> 
+          Address: { item.address }</p>
           </CCardText>
           </CCardBody>
           </CCard>
           </Popup>
+          </td>
           </ol>}
           <td>{ item.email }</td>
           <td>{ item.contactNo }</td>
+          <td>{item.age}</td>
+          <td>{item.jobExperience === undefined ? '-' : `${item.jobExperience} years`}</td>
         
       </>
   )

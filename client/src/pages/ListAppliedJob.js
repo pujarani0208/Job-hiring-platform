@@ -89,6 +89,7 @@ class ListAppliedJobs extends Component {
           <th></th>
           <th>Email</th>
           <th>Contact No.</th>
+          <th>Age</th>
           <th>Job status</th>
         </tr>
         <tr>
@@ -110,6 +111,8 @@ class ListAppliedJobs extends Component {
           <th></th>
           <th>Email</th>
           <th>Contact No.</th>
+          <th>Age</th>
+          <th>Experience</th>
           <th>Job status</th>
         </tr>
         {

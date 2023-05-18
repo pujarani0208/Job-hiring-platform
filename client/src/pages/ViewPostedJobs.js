@@ -113,7 +113,7 @@ class JobDetails extends Component {
         <div className='divTableButton'>
         <table>
         <tr> 
-        <th colSpan={4}></th>
+        <th colSpan={6}></th>
 
         <th>
           <Link to={{
@@ -126,7 +126,9 @@ class JobDetails extends Component {
         <tr>
           <th>Job Title</th>
           <th>Company Name</th>
-          <th colSpan={4}>Location</th>
+          <th>Location</th>
+          <th>Salary</th>
+          <th>Openings</th>
         </tr>
             {
                 items.map((item) => (
@@ -139,19 +141,22 @@ class JobDetails extends Component {
                   <CCardBody>
                   <CCardTitle><h5>{item.jobTitle}</h5></CCardTitle>
                   <CCardText>
+                  <p className='paraBreak'>
                   Openings: { item.openings }<br></br>
                   Salary: { item.salary }<br></br>
                   Description: { item.description }<br></br>
                   ContactNo: { item.contactNo }<br></br>
                   Email: { item.email }<br></br>
                   Location: {item.location}<br></br>
-                  jobAddress: { item.jobAddress }<br></br> 
+                  jobAddress: { item.jobAddress }</p>
                   </CCardText>
                   </CCardBody>
                   </CCard>               
                   </Popup></td>
               <td>{item.companyName }</td>
               <td>{item.location}</td>
+              <td>{item.salary}</td>
+              <td>{item.openings}</td>
               <td>
               <Link to={{
                 pathname: "/getAllAppliedJobs",

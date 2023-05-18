@@ -62,6 +62,7 @@ export class JobForm extends Component {
   // Removes sign in and register buttons from homepage
   // upon mounting of Register component
   componentDidMount() {
+    const {user} = this.props.authState;
     if(this.state.id !== undefined) {
     fetch(
       `http://localhost:3000/api/jobs/getJobForm/${this.state.id}`)
@@ -84,9 +85,19 @@ export class JobForm extends Component {
           }
         })
     } else {
-      this.setState({
-        buttonStatus: 'Post Job',
-      })
+      fetch(
+        `http://localhost:3000/api/profile/getProfileByUserId/${user.id}`)
+          .then((res) => res.json())
+          .then((json) => {
+            if (Object.keys(json).length !== 0) {
+            this.setState({
+                contactPersonName: json.firstName + " " + json.lastName,
+                contactNo: json.contactNo,
+                email: json.email,
+                companyName: json.company,
+                buttonStatus: 'Post Job',
+            });
+          }})
     }
   }
 

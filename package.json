@@ -34,6 +34,7 @@
     "helmet": "^3.21.3",
     "i": "^0.3.7",
     "mdb-react-ui-kit": "^6.0.0",
+    "moment": "^2.29.4",
     "mongodb": "^5.4.0",
     "mongoose": "^5.12.3",
     "morgan": "^1.10.0",

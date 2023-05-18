@@ -11,7 +11,7 @@
 /* Mobile first design, Portrait displays under 48em/768px */
 .formStyle {
   display: block;
-  width: 32%;
+  width: 33%;
   margin: 0 auto;
   position: absolute;
   top: 50%;
@@ -26,12 +26,19 @@
   position: absolute;
   transform: translate(-50%, -40%);
 }
+.paraBreak {
+  word-break: break-word;
+  word-wrap: break-word;
+  padding: auto;
+  max-width: 250px;
+}
 
 .divTableButton {
   display: block;
   width: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
+  top: 0%;
   position: absolute;
   transform: translate(+5%, +8%);
 }
@@ -41,8 +48,10 @@
   width: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
+  top: 18%;
+  left: 0%;
   position: absolute;
-  transform: translate(+5%, +100%);
+  transform: translate(+2%, +10%);
 }
 
 .divTable {
@@ -50,6 +59,7 @@
   width: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
+  top: 5%;
   position: absolute;
   transform: translate(+2%, +10%);
 }

@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const Profile = require("../models/Profile");
 const  ObjectID = require('mongodb').ObjectId;
-
+const moment = require("moment");
 
 exports.saveProfile = (req, res) => {
   const data = req.body;
@@ -9,11 +9,20 @@ exports.saveProfile = (req, res) => {
   if (data._id == undefined) {
     data._id = new ObjectID(); 
 }
+data.dob = moment(data.dob).format("YYYY-MM-DD"),
+console.log("dc", data.dob)
   Profile.findOneAndUpdate({ "_id":data._id }, data, { upsert:true })
     .then(
     res.json("Successfully saved profile")
   )
 .catch((err) => console.log(err));
+}
+
+function age(dateString){
+  let birth = new Date(dateString);
+  let now = new Date();
+  let beforeBirth = ((() => {birth.setDate(now.getDate());birth.setMonth(now.getMonth()); return birth.getTime()})() < birth.getTime()) ? 0 : 1;
+  return now.getFullYear() - birth.getFullYear() - beforeBirth;
 }
 
 exports.getProfileById = async (req,  res) => {
@@ -27,10 +36,14 @@ exports.getProfileById = async (req,  res) => {
           container.gender = profile.gender
           container.uniqueIdentity = profile.uniqueIdentity
           container.description = profile.description
+          container.jobExperience = profile.jobExperience
           container.firstName = profile.firstName
+          container.company = profile.company
           container.lastName = profile.lastName
           container.contactNo = profile.contactNo
           container.address = profile.address
+          container.dob =   moment(profile.dob, "YYYY-MM-DD").format("YYYY-MM-DD")
+          container.age = age(container.dob)
           container.email = profile.email
           return container
         })
@@ -50,11 +63,15 @@ exports.getProfileById = async (req,  res) => {
           container._id = profile._id
           container.status = profile.status
           container.gender = profile.gender
+          container.company = profile.company
+          container.jobExperience = profile.jobExperience
           container.uniqueIdentity = profile.uniqueIdentity
           container.description = profile.description
           container.firstName = profile.firstName
           container.lastName = profile.lastName
           container.contactNo = profile.contactNo
+          container.dob =   moment(profile.dob, "YYYY-MM-DD").format("YYYY-MM-DD")
+          container.age = age(container.dob)
           container.address = profile.address
           container.email = profile.email
           return container

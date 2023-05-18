@@ -9,9 +9,9 @@ import {
   PROFILE_NOT_SAVED
 } from "./types";
 
-export const saveProfile = ({userId, gender ,_id,  uniqueIdentity, description, firstName, lastName, contactNo, address, email }) => (dispatch) => {
+export const saveProfile = ({userId, gender ,_id, jobExperience, company,  uniqueIdentity, dob, description, firstName, lastName, contactNo, address, email }) => (dispatch) => {
     // Headers
-    const body = JSON.stringify({ userId, gender ,_id, uniqueIdentity, description, firstName, lastName, contactNo, address, email });
+    const body = JSON.stringify({ userId, gender ,_id, jobExperience, company, uniqueIdentity, dob,  description, firstName, lastName, contactNo, address, email });
     const headers = {
       headers: {
         "Content-Type": "application/json"

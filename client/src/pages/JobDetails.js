@@ -121,13 +121,14 @@ class JobDetails extends Component {
                   <CCardBody>
                   <CCardTitle><h5>{item.jobTitle}</h5></CCardTitle>
                   <CCardText>
+                  <p className='paraBreak'>
                   Openings: { item.openings }<br></br>
                   Salary: { item.salary }<br></br>
                   Description: { item.description }<br></br>
                   ContactNo: { item.contactNo }<br></br>
                   Email: { item.email }<br></br>
                   Location: {item.location}<br></br>
-                  jobAddress: { item.jobAddress }<br></br> 
+                  jobAddress: { item.jobAddress }</p>
                   </CCardText>
                   </CCardBody>
                   </CCard>               
