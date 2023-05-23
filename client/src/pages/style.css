@@ -32,7 +32,21 @@
   padding: auto;
   max-width: 250px;
 }
-
+.toast-message {
+  background: darkblue;
+  color: #fff;
+  font-size: 20px;
+  width: 34vw;
+  padding: 30px 20px;
+}
+.error-toast-message {
+  background: rgb(121, 47, 15);
+  color: #c56666;
+  font-size: 20px;
+  font-display: #c56666;
+  width: 34vw;
+  padding: 30px 20px;
+}
 .divTableButton {
   display: block;
   width: 100%;
@@ -42,7 +56,6 @@
   position: absolute;
   transform: translate(+5%, +8%);
 }
-
 .divTableProfile {
   display: block;
   width: 100%;

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   Button,
   Card,
@@ -92,25 +94,53 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
   };
   handleValidation() {
     let formIsValid = true;
-    const errors = {};
-
+    const errors =  Object.assign({},this.state.errors);
+    const {user} = this.props.authState;
     //Name
-    if (this.state.firstName) {
+    if (this.state.firstName === '' || this.state.firstName === undefined) {
+      errors['firstName'] = "Cannot be empty!";
       formIsValid = false;
-      errors['firstName'] = "Cannot be empty";
     }
-
     if (typeof this.state.firstName !== "undefined") {
       if (!this.state.firstName.match(/^[a-zA-Z]+$/)) {
+        errors['firstName'] = "Only letters allowed!";
+        formIsValid = false;        
+      }
+      if (!(this.state.firstName.length > 2)) {
+        errors['firstName'] = "Size must be greater than 2!";
         formIsValid = false;
-        errors['firstName'] = "Only letters";
+      }
+    }
+    //last name
+    if (typeof this.state.lastName !== "undefined") {
+      if (!this.state.lastName.match(/^[a-zA-Z]+$/)) {
+        errors['lastName'] = "Only letters allowed!";
+        formIsValid = false;
+      }
+    }
+  
+    //uniqueIdentity
+    if (this.state.uniqueIdentity === '') {
+      errors['uniqueIdentity'] = "Cannot be empty!";
+      formIsValid = false;
+    }
+    if (typeof this.state.uniqueIdentity !== "undefined") {
+      if (!(this.state.uniqueIdentity.length > 6)) {
+        errors['uniqueIdentity'] = "Size must be greater than 6!";
+        formIsValid = false;
       }
     }
 
-    //Email
-    if (!this.state.email) {
+    //uniqueIdentity
+    if (this.state.company === '' && user.userType === 'HIRE') {
+      errors['company'] = "Cannot be empty!";
       formIsValid = false;
-      errors['email'] = "Cannot be empty";
+    }
+  
+    //Email
+    if (this.state.email === '') {
+      errors['email'] = "Cannot be empty!";
+      formIsValid = false;
     }
 
     if (typeof this.state.email !== "undefined") {
@@ -126,20 +156,135 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
           this.state.email.length - lastDotPos > 2
         )
       ) {
+        errors['email'] = "Email is not valid!";
         formIsValid = false;
-        errors['email'] = "Email is not valid";
       }
     }
+    //DOB
+      if (this.state.dob === '') {
+        errors['dob'] = "Cannot be empty!";
+        formIsValid = false;
+      }
+    //Gender
+      if (this.state.gender === '') {
+        errors['gender'] = "Cannot be empty!";
+        formIsValid = false;
+      }
     
-    this.setState({
+    //Contact Number
+    if (this.state.contactNo === '') {
+      errors['contactNo'] = "Cannot be empty!";
+      formIsValid = false;
+    }
+    if (typeof this.state.contactNo !== "undefined") {
+      if (!this.state.contactNo.match(/^\+{0,2}([\-\. ])?(\(?\d{0,3}\))?([\-\. ])?\(?\d{0,3}\)?([\-\. ])?\d{3}([\-\. ])?\d{4}/)) {
+        errors['contactNo'] = "Invalid contact Number!";
+        formIsValid = false;
+      }
+    }
+  
+  this.setState({
       errors :  errors
-    })
-    console.log("vf",  errors)
+  })
     return formIsValid;
   }
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
+    const errors =  Object.assign({},this.state.errors);
+    //Name
+    errors[e.target.name] = '';
+    if (e.target.name === 'firstName') {
+    if (e.target.value === '' || e.target.value === undefined) {
+      errors[e.target.name] = "Cannot be empty!";
+    }
+    if (!(e.target.value.length > 2)) {
+      errors[e.target.name] = "Size must be greater than 2!";
+    }
+    if (typeof e.target.value !== "undefined") {
+      if (!e.target.value.match(/^[a-zA-Z]+$/)) {
+        errors[e.target.name] = "Only letters allowed!";
+      }
+    }
+  }
+    //last name
+    if (e.target.name === 'lastName') {
+    if (typeof e.target.value !== "undefined") {
+      if (!e.target.value.match(/^[a-zA-Z]+$/)) {
+        errors[e.target.name] = "Only letters allowed!";
+      }
+    }
+  }
+    //uniqueIdentity
+    if (e.target.name === 'uniqueIdentity') {
+    if (e.target.value === '') {
+      errors[e.target.name] = "Cannot be empty!";
+    }
+    if (typeof e.target.value !== "undefined") {
+      if (!(e.target.value.length > 6)) {
+        errors[e.target.name] = "Size must be greater than 6!";
+      }
+    }
+  }
+  //dob
+  if (e.target.name === 'dob') {
+    if (e.target.value === '') {
+      errors[e.target.name] = "Cannot be empty!";
+    }
+  }
+  //gender
+  if (e.target.name === 'gender') {
+    if (e.target.value === '') {
+      errors[e.target.name] = "Cannot be empty!";
+    }
+  }
+  //copmany
+  if (e.target.name === 'company') {
+    if (e.target.value === '') {
+      errors[e.target.name] = "Cannot be empty!";
+    }
+  }
+  if (e.target.name === 'email') {
+
+    //Email
+    if (e.target.value === '') {
+      errors[e.target.name] = "Cannot be empty!";
+    }
+
+    if (typeof e.target.value !== "undefined") {
+      let lastAtPos = e.target.value.lastIndexOf("@");
+      let lastDotPos = e.target.value.lastIndexOf(".");
+
+      if (
+        !(
+          lastAtPos < lastDotPos &&
+          lastAtPos > 0 &&
+          e.target.value.indexOf("@@") == -1 &&
+          lastDotPos > 2 &&
+          e.target.value.length - lastDotPos > 2
+        )
+      ) {
+        errors[e.target.name] = "Email is not valid!";
+      }
+    }
+  }
+    //Contact Number
+    if (e.target.name === 'contactNo') {
+    if (e.target.value === '') {
+      errors[e.target.name] = "Cannot be empty!";
+    }
+    if (typeof e.target.value !== "undefined") {
+      if (!(e.target.value.match(/^\+{0,2}([\-\. ])?(\(?\d{0,3}\))?([\-\. ])?\(?\d{0,3}\)?([\-\. ])?\d{3}([\-\. ])?\d{4}/))) {
+        errors[e.target.name] = "Invalid contact number!";
+      }
+    }
+  }
+  if (errors[e.target.name] === "") {
+    delete errors[e.target.name];
+  }
+  this.setState({
+      errors :  errors
+  })
   };
 
   componentDidUpdate(prevProps) {
@@ -154,43 +299,43 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
       if (status.id === "PROFILE_SAVED_SUCCESSFULLY") {
         setTimeout(() => {
           this.props.history.push("/profile");
-        }, 2000);
+        }, 6000);
       }
     }
-
-    // Redirects to Log In screen after a delay of 2secs if successfully registered
     
   }
 
   onSubmit = (e) => {
     e.preventDefault();
-
-    // if (this.handleValidation()) {
+    if (this.handleValidation()) {
       const {user} = this.props.authState;
       const {gender , uniqueIdentity, company, description, firstName, lastName, jobExperience, contactNo, address, dob, email} = this.state;
       const data = {gender , uniqueIdentity, company, description, firstName, jobExperience, lastName, contactNo, address, dob, email};
       data.userId = user.id;
       data._id = this.state.id
       this.props.saveProfile(data);    
-    // } else {
-    //   alert("Form has errors.");
-    // }
+    } else {
+      toast("Form has errors!",{
+        position: toast.POSITION.TOP_RIGHT,
+        className: 'error-toast-message'}, {autoClose:3000}) 
+    }
 
   };
   render() {
     let className = "divStyle";
     let alert;
     if (this.state.msg && this.props.status.respCode >= 400) {
-      alert = <Alert color="danger">{this.state.msg}</Alert>;
+      alert = toast(`${this.state.msg}`,{
+        position: toast.POSITION.TOP_RIGHT,
+        className: 'error-toast-message'}, {autoClose:3000})
     } else if (this.state.msg && this.props.status.respCode === 200) {
-      alert = (
-        <Alert color="success">
-          {this.state.msg} <br /> Redirecting to About page
-        </Alert>
-      );
+      alert = toast(`${this.state.msg}`,
+      {
+        position: toast.POSITION.TOP_RIGHT,
+        className: 'toast-message'},
+         {autoClose:3000});
     }
     let {errors} = this.state;
-    console.log("cd", errors)
     if (!this.props.button) {
       className = "formStyle";
     }
@@ -204,16 +349,19 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
       <div className="navbarMain">
         <InnerNavbar></InnerNavbar>
         </div>
+        {alert}
+        <ToastContainer />
     <div className={className}>
+      
     <Card>
     <CardTitle> <h2 ><strong>{this.state.buttonStatus}</strong></h2></CardTitle>
         <CardBody >
-        {alert}
+        {/* {alert} */}
           <Form onSubmit={this.onSubmit} >
           <Row className="align-items-center">
         <Col xs="auto">
           <FormGroup>
-          <Label for="firstName">First name</Label>
+          <Label for="firstName"><div class="required-field">First name</div></Label>
             <Input
                   type="text"
                   name="firstName"
@@ -223,8 +371,8 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
                   className="mb-3"
                   onChange={this.onChange}
                   />
-          {errors !== undefined && <span style={{ color: "red" }}>{errors['firstName']}</span>}
-            <Label for="uniqueIdentity">Unique Identity Number</Label>
+          {errors !== undefined && <div className ='fieldError'>{errors['firstName']}</div>}
+            <Label for="uniqueIdentity" ><div class="required-field">Unique Identity Number</div></Label>
           <Input
                   type="text"
                   name="uniqueIdentity"
@@ -234,7 +382,8 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
                   value = {this.state.uniqueIdentity}
                   onChange={this.onChange}
                 />
-             <Label for="contactNo">Contact No.</Label>
+            {errors !== undefined &&  <div className ='fieldError'>{errors['uniqueIdentity']}</div>}
+             <Label for="contactNo"><div class="required-field">Contact No.</div></Label>
             <Input
                   type="text"
                   name="contactNo"
@@ -244,6 +393,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
                   value = {this.state.contactNo}
                   onChange={this.onChange}
                 />
+            {errors !== undefined && <div className ='fieldError'>{errors['contactNo']}</div>}
           <Label for="email">E-mail</Label>
             <Input
               type="email"
@@ -254,7 +404,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
               value = {this.state.email}
               onChange={this.onChange}
             />
-            {errors !== undefined && <span style={{ color: "red" }}>{errors['email']}</span>}
+            {errors !== undefined && <div className ='fieldError'>{errors['email']}</div>}
 
             {user.userType === 'GET_HIRED' && <Label for="jobExperience">Experience Years</Label>}
             {user.userType === 'GET_HIRED' && <Input
@@ -266,7 +416,8 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
               value = {this.state.jobExperience}
               onChange={this.onChange}
             />}
-            {user.userType === 'HIRE' && <Label for="company">Company</Label>}
+            {user.userType === 'GET_HIRED' && errors !== undefined && <div className ='fieldError'>{errors['jobExperience']}</div>}
+            {user.userType === 'HIRE' && <Label for="company"><div class="required-field">Company</div></Label>}
             {user.userType === 'HIRE' && <Input
               type="company"
               name="company"
@@ -276,6 +427,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
               value = {this.state.company}
               onChange={this.onChange}
             />}
+            {user.userType === 'HIRE' && errors !== undefined && <div className ='fieldError'>{errors['company']}</div>}
             </FormGroup>
           </Col>
                 <Col xs="auto">
@@ -290,7 +442,8 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
                   value = {this.state.lastName}
                   onChange={this.onChange}
                 />
-            <Label for="dob">Date of Birth</Label>
+            {errors !== undefined && <div className ='fieldError'>{errors['lastName']}</div>}
+            <Label for="dob"><div class="required-field">Date of Birth</div></Label>
             <Input
                   type="date"
                   name="dob"
@@ -299,6 +452,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
                   value = {this.state.dob}
                   onChange={this.onChange}
                 />
+            {errors !== undefined && <div className ='fieldError'>{errors['dob']}</div>}
               <Label for="address">Address</Label>
             <Input
                   type="text"
@@ -309,7 +463,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
                   value = {this.state.address}
                   onChange={this.onChange}
                 />
-               <Label for="gender">Gender</Label>
+               <Label for="gender"><div class="required-field">Gender</div></Label>
             <Input
                   type="text"
                   name="gender"
@@ -319,6 +473,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
                   value = {this.state.gender}
                   onChange={this.onChange}
                 />
+              {errors !== undefined && <div className ='fieldError'>{errors['gender']}</div>}
                <Label for="description">Description</Label>
             <Input
                   type="text"

@@ -36,6 +36,17 @@ body {
   margin: auto;
   text-align: center;
 }
+.required-field::after {
+  content: "*";
+  color: red;
+}
+.fieldError {
+  position: absolute;
+  display: block;
+  font-size: 15px;
+  color: red;
+  margin-top: -18px;
+}
 .navbarMain {
   position: absolute;
   width: 100%;
