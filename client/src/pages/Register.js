@@ -65,7 +65,6 @@ class Register extends Component {
 
   // Sets the value of the input fields to the state items of the same name
   onChange = (e) => {
-    console.log("values" , e.target.name , e.target.value);
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -97,16 +96,16 @@ class Register extends Component {
     }
 
     if (!this.props.button) {
-      className = "formStyle";
+      className = "formStyleRegister";
     }
     return (
       <>
+    <div className='main'>
       <div className="navbarMain">
         <Navbar></Navbar>
         </div>
       <div className={className}>
         <Card>
-          <CardBody>
             <CardTitle>
               <h2>
                 <strong>Register</strong>
@@ -116,12 +115,13 @@ class Register extends Component {
               Already have an account?
               <Link to="/login"> Log In. </Link>
             </CardSubtitle>
-            <br />
+            <CardBody className='card'>
             {alert}
             <Form onSubmit={this.onSubmit}>
-              <FormGroup className="text-center">
+              <FormGroup>
+              <div className="form-inline justify-content-left">
               <Label for="userType">Select User Type</Label>
-                <div className="form-inline justify-content-center">
+                <div className="radioButton form-inline justify-content-right">
                 <Label for="userType">Get Hired</Label>
                 <Input
                   type="radio"
@@ -133,6 +133,8 @@ class Register extends Component {
                   defaultChecked
                   onChange={this.onChange}
                 />
+                </div>
+                <div className="radioButton form-inline">
                 <Label for="userType">Hire</Label>
                 <Input
                   type="radio"
@@ -143,6 +145,7 @@ class Register extends Component {
                   size="lg"
                   onChange={this.onChange}
                 />
+                </div>
                 </div>
                 <Label for="name">Name</Label>
                 <Input
@@ -174,7 +177,7 @@ class Register extends Component {
                   size="lg"
                   onChange={this.onChange}
                 />
-                <Button color="dark" className="mt-5" size="lg" block>
+                <Button  color="info" className="button">
                 { this.props.loading ?
                        <span >Registering.. <Spinner size="sm" color="light" /></span> : <span>Register</span>}
                 </Button>
@@ -182,6 +185,7 @@ class Register extends Component {
             </Form>
           </CardBody>
         </Card>
+      </div>
       </div>
       </>
     );

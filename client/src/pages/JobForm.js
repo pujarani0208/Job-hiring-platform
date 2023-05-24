@@ -171,7 +171,7 @@ onSubmit = (e) => {
     <div className={className}>
     <Card className='card'>
     <CardTitle> <h2><strong>{this.state.buttonStatus}</strong></h2></CardTitle>
-        <CardBody >
+    <CardBody className='card'>
             {alert}
           <Form onSubmit={this.onSubmit}>
           <Row className="align-items-center">
@@ -285,7 +285,7 @@ onSubmit = (e) => {
             </FormGroup>
           </Col>
           </Row>
-            <Button color="dark" className='button'>
+            <Button color="info" className='button'>
                { this.props.loading ?
                <span >Posting job.. <Spinner size="sm" color="light" /></span> : <span>{this.state.buttonStatus}</span>}
             </Button>

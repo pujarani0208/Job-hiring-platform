@@ -85,6 +85,7 @@ class ListAppliedJobs extends Component {
           <InnerNavbar></InnerNavbar>
           </div>
           <div className='divTableProfile'>
+            <br></br>
           <table>
           <tr>
           <th></th>

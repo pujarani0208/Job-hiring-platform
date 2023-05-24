@@ -74,25 +74,39 @@ onSubmit = (e) => {
   render() {
     let className = 'divStyle';
     if (!this.props.button) {
-      className = 'formStyle';
+      className = 'formStyleLogin';
+    }
+    let alert;
+    if (this.state.msg && this.props.status.respCode >= 400) {
+      alert = <Alert color="danger">{this.state.msg}</Alert>;
+    } else if (this.state.msg && this.props.status.respCode === 200) {
+      alert = (
+        <Alert color="success">
+          {this.state.msg} <br /> Redirecting to Log In screen
+        </Alert>
+      );
     }
     return (
       <>
+     <div className='main'>
       <div className="navbarMain">
         <Navbar></Navbar>
         </div>
       <div className={className}>
-            <Card>
-                <CardBody >
-                  <CardTitle> <h2><strong>Login</strong></h2></CardTitle>
-                <CardSubtitle className="text-muted">Don't have an account?
-                <Link to="/register"> Register. </Link></CardSubtitle>
-                <br/>
-                {this.state.msg ? (
-              <Alert color="danger">{this.state.msg}</Alert>
-            ) : null}
-                  <Form onSubmit={this.onSubmit} >
-                  <FormGroup>
+        <Card>
+            <CardTitle>
+              <h2>
+                <strong>Login</strong>
+              </h2>
+            </CardTitle>
+            <CardSubtitle className="text-muted">
+              Already have an account?
+              <Link to="/register"> Register </Link>
+            </CardSubtitle>
+            <CardBody className='card'>
+            {alert}
+            <Form onSubmit={this.onSubmit}>
+              <FormGroup>
                     <Label for="email">E-mail</Label>
                     <Input
                       type="email"
@@ -114,7 +128,7 @@ onSubmit = (e) => {
                       className="mb-3"
                       onChange={this.onChange}
                     />
-                    <Button size="lg" color="dark" style={{ marginTop: "2rem" }} block>
+                    <Button color="info" className="button">
                        { this.props.loading ?
                        <span >Logging in.. <Spinner size="sm" color="light" /></span> : <span>Login</span>}
                     </Button>
@@ -122,7 +136,7 @@ onSubmit = (e) => {
                 </Form>
                 </CardBody>
             </Card>
-
+          </div>
       </div>
       </>
     )

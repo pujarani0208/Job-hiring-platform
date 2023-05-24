@@ -317,7 +317,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
     } else {
       toast("Form has errors!",{
         position: toast.POSITION.TOP_RIGHT,
-        className: 'error-toast-message'}, {autoClose:3000}) 
+        className: 'errorToastMessage'}, {autoClose:3000}) 
     }
 
   };
@@ -327,12 +327,12 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
     if (this.state.msg && this.props.status.respCode >= 400) {
       alert = toast(`${this.state.msg}`,{
         position: toast.POSITION.TOP_RIGHT,
-        className: 'error-toast-message'}, {autoClose:3000})
+        className: 'errorToastMessage'}, {autoClose:3000})
     } else if (this.state.msg && this.props.status.respCode === 200) {
       alert = toast(`${this.state.msg}`,
       {
         position: toast.POSITION.TOP_RIGHT,
-        className: 'toast-message'},
+        className: 'toastMessage'},
          {autoClose:3000});
     }
     let {errors} = this.state;
@@ -489,7 +489,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
             </Col>
             </Row>
             <FormGroup>
-            <Button color="dark" className='button'>
+            <Button color="info" className='button'>
                { this.props.loading ?
                <span >Applying job.. <Spinner size="sm" color="info" /></span> : <span>{this.state.buttonStatus}</span>}
             </Button>
