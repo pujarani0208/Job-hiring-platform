@@ -346,6 +346,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
 
     return (
       <>
+      <div className='main'>
       <div className="navbarMain">
         <InnerNavbar></InnerNavbar>
         </div>
@@ -355,12 +356,12 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
       
     <Card>
     <CardTitle> <h2 ><strong>{this.state.buttonStatus}</strong></h2></CardTitle>
-        <CardBody >
+        <CardBody className='card'>
         {/* {alert} */}
           <Form onSubmit={this.onSubmit} >
           <Row className="align-items-center">
         <Col xs="auto">
-          <FormGroup>
+          <FormGroup className='formGroup'>
           <Label for="firstName"><div class="required-field">First name</div></Label>
             <Input
                   type="text"
@@ -431,7 +432,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
             </FormGroup>
           </Col>
                 <Col xs="auto">
-          <FormGroup>
+                <FormGroup className='formGroup'>
           <Label for="lastName">Last name</Label>
             <Input
                   type="text"
@@ -488,7 +489,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
             </Col>
             </Row>
             <FormGroup>
-            <Button color="info" style={{ marginTop: "2rem" }} block>
+            <Button color="dark" className='button'>
                { this.props.loading ?
                <span >Applying job.. <Spinner size="sm" color="info" /></span> : <span>{this.state.buttonStatus}</span>}
             </Button>
@@ -497,6 +498,7 @@ import { buttonClicked, buttonReset } from "../actions/uiActions";
         </CardBody>
     </Card>
     </div>    
+    </div>
     </>
     )
   }

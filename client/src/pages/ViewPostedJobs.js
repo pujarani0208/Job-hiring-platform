@@ -79,6 +79,7 @@ class JobDetails extends Component {
     if (!items || items.length === 0) {
       return (
       <>
+    <div className='main'>
       <div className="navbarMain">
         <InnerNavbar></InnerNavbar>      
         </div>
@@ -103,10 +104,12 @@ class JobDetails extends Component {
         <h6>No data found...</h6>
         </table>
         </div>
+        </div>
         </>
     )}
     return (
       <>
+      <div className='main'>
       <div className="navbarMain">
         <InnerNavbar></InnerNavbar>
         </div>
@@ -179,6 +182,7 @@ class JobDetails extends Component {
                 ))
             }
             </table>
+            </div>
             </div>
             </>
   )

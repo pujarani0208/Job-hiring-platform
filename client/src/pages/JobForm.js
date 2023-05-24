@@ -164,18 +164,19 @@ onSubmit = (e) => {
     }
     return (
       <>
+   <div className='main'>
       <div className="navbarMain">
         <InnerNavbar></InnerNavbar>
         </div>
     <div className={className}>
-    <Card>
+    <Card className='card'>
     <CardTitle> <h2><strong>{this.state.buttonStatus}</strong></h2></CardTitle>
         <CardBody >
             {alert}
           <Form onSubmit={this.onSubmit}>
           <Row className="align-items-center">
         <Col xs="auto">
-          <FormGroup>
+        <FormGroup className='formGroup'>
           <Label for="companyName">Company Name</Label>
             <Input
                   type="text"
@@ -230,7 +231,7 @@ onSubmit = (e) => {
                 </FormGroup>
           </Col>
                 <Col xs="auto">
-          <FormGroup>
+          <FormGroup className='formGroup'>
               <Label for="contactNo">Contact No</Label>
             <Input
                   type="text"
@@ -284,7 +285,7 @@ onSubmit = (e) => {
             </FormGroup>
           </Col>
           </Row>
-            <Button color="dark" style={{ marginTop: "2rem" }} block>
+            <Button color="dark" className='button'>
                { this.props.loading ?
                <span >Posting job.. <Spinner size="sm" color="light" /></span> : <span>{this.state.buttonStatus}</span>}
             </Button>
@@ -293,6 +294,7 @@ onSubmit = (e) => {
         </CardBody>
     </Card>
     </div>    
+    </div>
     </>
     )
   }

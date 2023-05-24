@@ -7,16 +7,38 @@
   left: 50%;
   transform: translate(-50%, -40%);
 }
-
+.button {
+  position: relative;
+  width: 18%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+.card {
+  position: absolute;
+  width: 100%;
+  transform: translate(-0%, -0%);
+  color: #0f71af;
+  margin: auto;
+  text-align: center;
+}
+.formGroup {
+  position: relative;
+  width: 160%;
+  padding-left: 5rem;
+  padding-right: 15rem;
+  transform: translate(-8%, -0%);
+  color: #0f71af;
+  margin: auto;
+  text-align: left;
+}
 /* Mobile first design, Portrait displays under 48em/768px */
 .formStyle {
   display: block;
-  width: 33%;
+  width: 75%;
   margin: 0 auto;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -40%);
+  transform: translate(+15%, +16%);
 }
 
 .popUp {
@@ -64,7 +86,7 @@
   top: 18%;
   left: 0%;
   position: absolute;
-  transform: translate(+2%, +10%);
+  transform: translate(+2%, +50%);
 }
 
 .divTable {
@@ -74,7 +96,7 @@
   padding-right: 1rem;
   top: 5%;
   position: absolute;
-  transform: translate(+2%, +10%);
+  transform: translate(+2%, +50%);
 }
 table {
   width: 100%;

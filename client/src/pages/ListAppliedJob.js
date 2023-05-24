@@ -80,6 +80,7 @@ class ListAppliedJobs extends Component {
     if (!items || items.length === 0) {
       return (
         <>
+      <div className='main'>
         <div className="navbarMain">
           <InnerNavbar></InnerNavbar>
           </div>
@@ -97,11 +98,13 @@ class ListAppliedJobs extends Component {
         </tr>
           </table>
           </div>
+          </div>
           </>
       )
     }
     return (
       <>
+    <div className='main'>
       <div className="navbarMain">
         <InnerNavbar></InnerNavbar>
         </div>
@@ -133,6 +136,7 @@ class ListAppliedJobs extends Component {
             ))
           }
           </table>
+      </div>
       </div>
       </>
   )
