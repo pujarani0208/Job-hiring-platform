@@ -1,0 +1,27 @@
+export const AUTH_ERROR = "AUTH_ERROR";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAIL = "LOGIN_FAIL";
+export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
+export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
+export const REGISTER_FAIL = "REGISTER_FAIL";
+export const GET_STATUS = 'GET_STATUS';
+export const CLEAR_STATUS = 'CLEAR_STATUS';
+export const BUTTON_CLICKED = 'BUTTON_CLICKED';
+export const BUTTON_RESET = 'BUTTON_RESET';
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_FAIL = 'AUTH_FAIL';
+export const IS_LOADING = 'IS_LOADING';
+
+export const JOB_NOT_POSTED='JOB_NOT_POSTED';
+export const JOB_NOT_APPLIED='JOB_NOT_APPLIED';
+export const JOB_POSTED='JOB_POSTED';
+export const JOB_APPLIED='JOB_APPLIED';
+export const GET_APPLIED_JOBS='GET_APPLIED_JOBS';
+export const GET_JOBS_FAILS='GET_JOBS_FAILS';
+export const GET_APPLIED_JOBS_FAILS='GET_APPLIED_JOBS_FAILS';
+export const GET_JOBS='GET_JOBS';
+
+export const PROFILE_SAVED='PROFILE_SAVED';
+export const PROFILE_NOT_SAVED ='PROFILE_NOT_SAVED';
+export const GET_PROFILE='GET_PROFILE';
+export const PROFILE_ERROR='PROFILE_ERROR';
