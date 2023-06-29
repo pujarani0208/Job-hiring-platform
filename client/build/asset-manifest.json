@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/sessions-auth-app/static/css/main.5485a84e.css",
+    "main.js": "/sessions-auth-app/static/js/main.14bc3f7e.js",
+    "index.html": "/sessions-auth-app/index.html",
+    "main.5485a84e.css.map": "/sessions-auth-app/static/css/main.5485a84e.css.map",
+    "main.14bc3f7e.js.map": "/sessions-auth-app/static/js/main.14bc3f7e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5485a84e.css",
+    "static/js/main.14bc3f7e.js"
+  ]
+}
